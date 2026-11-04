@@ -1,0 +1,99 @@
+pipeline: Saved Proxy List
+
+status: accepted
+
+summary:
+  problem: "Save перезаписывает единственный host/port/protocol. Нельзя держать несколько
+    прокси, выбрать другой или удалить старый, не потеряв текущий endpoint."
+  solution: "Каталог — string-pref троек; active — те же host/port/protocol. Home: тумблер
+    и выбранный. Список и редактор отдельно. Выбор с Check. При включённом VPN каталог заморожен."
+  tradeoff: "Нет UUID и горячей смены туннеля: правка хоста — новая тройка; смена прокси
+    требует выключить VPN. Каждый тап в списке снова проверяет endpoint."
+
+context: >
+  KillSwitchPrefs хранит один host, port, protocol и desiredEnabled. SaveProxyEndpointUseCase
+  перезаписывает эту тройку. KillSwitchRepository.settingsFlow отдаёт KillSwitchSettings без
+  списка. ProxyVpnService и тайл читают host/port/protocol синхронно на старте; hev-socks5
+  каталога не знает. KillSwitchHome — тумблер, поля, Check, Save; в intents нет списка.
+  Навигация — только KillSwitchHome. Preferences даёт string/int/boolean, не StringSet.
+  Репозиторий — средний blast: AppGraph, сервис, use case. Списка, id профиля и второго
+  экрана нет. Сервис читает endpoint только при старте: смена prefs при живом TUN не
+  переключает апстрим.
+
+decision: >
+  Каталог — string-pref savedEndpoints (строки host|port|protocol), ключ записи — тройка.
+  Active — уже существующие host/port/protocol, без selectedId. Всё в :feature:killswitch,
+  без Room и файлов. KillSwitchHome: тумблер, строка active, переход в список. Список:
+  radio, FAB, удаление. Редактор: поля, Check, Save. FAB — пустой черновик; при выключенном
+  VPN строка открывает свою тройку. Save после Check: та же тройка только активирует;
+  другая — убирает старую, пишет новую, активирует. VPN включён — нет выбора, редактора,
+  удаления. VPN выключен — тап гоняет VerifyProxyEndpointUseCase; успех вызывает Save
+  (active), провал active не трогает; удаление любой строки, если это была active — очистить
+  host, тумблер остаётся выкл. Пустой каталог и валидный host — seed одной записью. Save
+  дополняет каталог с дедупом. Контракт репозитория для VPN не менять: сервис по-прежнему
+  читает одну тройку. Протокол в записи каталога обязателен, как в Prefs.
+
+consequences:
+  positive:
+    several_proxies: >
+      Можно хранить несколько endpoint и переключаться без ручного перенабора host/port.
+    vpn_untouched: >
+      Туннель и ProxyVpnService остаются потребителями одной тройки, без знания о каталоге.
+  negative:
+    no_hot_swap: >
+      Сменить прокси при живом TUN нельзя — сначала выключить тумблер.
+    triple_not_name: >
+      Нет имени профиля: две правки хоста не обновляют строку, а порождают новую тройку.
+
+rules:
+  vpn_freezes_catalog: >
+    Пока туннель включён, нельзя менять active-тройку и каталог — только выключить тумблер.
+  catalog_stays_string: >
+    Каталог живёт только как string primitive Pref, не как protobuf, Room или набор файлов.
+  triple_is_identity: >
+    Две записи с одинаковыми host, port и protocol — одна; повторный Save не плодит дубликат.
+  verify_before_activate: >
+    Тройка из списка становится active только после успешного VerifyProxyEndpointUseCase.
+  tunnel_one_endpoint: >
+    ProxyVpnService и JNI читают только host/port/protocol репозитория, никогда каталог.
+  bad_pref_is_empty: >
+    Битая или пустая savedEndpoints не валит старт — декод отбрасывает мусор, список пуст.
+
+flow:
+  - Home показывает тумблер и active; переход открывает список троек
+  - FAB открывает пустой редактор; Check затем Save пишет тройку в каталог и делает её active
+  - при выключенном VPN тап по строке проверяет endpoint и при успехе делает её active
+  - включённый VPN блокирует выбор, редактор и удаление
+  - удаление при выключенном VPN убирает тройку; если это была active — host очищается
+  - первый запуск с валидным host и пустым каталогом сеет одну запись
+
+components:
+  kill_switch_feature: :feature:killswitch — Prefs, repository, Orbit, навигация списка и редактора
+  prefs_base: Preferences в :core:common — stringProperty для каталога
+  vpn_service: ProxyVpnService — без изменений контракта чтения active endpoint
+
+paths:
+  - KillSwitchPrefs.savedEndpoints — string, строки host|port|protocol
+  - новые FullscreenRoute списка и редактора рядом с KillSwitchHome
+  - codec каталога в data/, не в Prefs-делегате
+
+setup:
+  - существующий Check-then-Save и ProxyEndpoint.isValid остаются воротами редактора и выбора
+  - миграция seed каталога из текущих host/port/protocol до первого показа списка
+
+rejected_alternatives:
+  list_on_home: >
+    Список на KillSwitchHome отклонён: нужны отдельные список и редактор, как у профилей VPN.
+  uuid_file_store: >
+    UUID и JSON-файлы отложены: ключ — тройка, указатель уже host/port/protocol, Room в
+    проекте нет.
+  restart_on_select: >
+    Перезапуск TUN при тапе отклонён: смена прокси только после выключения тумблера.
+  trust_without_check: >
+    Активация сохранённого без Check отклонён: в active по-прежнему только проверенный
+    endpoint.
+  forever_keep_active: >
+    Вечный запрет удалять выбранную строку отклонён: при выключенном VPN её можно убрать.
+
+history:
+  v1: список и редактор на тройках в string-pref; VPN замораживает каталог; выбор с Check

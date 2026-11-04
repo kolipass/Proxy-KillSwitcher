@@ -1,0 +1,124 @@
+pipeline: Two-Layer Implementation Plan Standard
+
+status: accepted
+
+summary:
+  problem: "План смешивал аудитории: human-only поле несло запреты для агента и терялось при вырезании,
+    description дублировал changes, новые имена тонули в прозе, per-task verify жёг токены."
+  solution: "Двухслойная таска: вырезаемый human-слой (review, introduces, title) в кавычках + агентный
+    слой без кавычек, pin правил скилов, constraints; один verify на весь план."
+  tradeoff: "Имена намеренно дублируются в introduces и агентном слое; единый verify в конце найдёт
+    ошибку первой таски только после реализации последней."
+
+context: >
+  План пишет planner-агент по PRD; реализует более слабая модель, чей единственный контекст — PRD и
+  план; человек ревьюит план до реализации и правит имена будущих файлов/классов/функций. Схема v1
+  (planner/tools/schema.yaml) провалила разделение аудиторий. read_before_implementation помечено
+  human-only, но несло критичные для агента запреты — в плане 21-0108_graph_stdio там жила
+  неизменяемость history из PD06, — а n8n/full_automation (03_validate_read_plan.sh) вырезает это
+  поле перед подачей плана агенту, теряя запреты. description дублировал changes почти дословно:
+  два расходящихся описания одного действия путают слабую модель и тратят её
+  бюджет инструкций. Новые имена, ради правки которых человек ревьюит план, тонули в прозе.
+  skills указывал на SKILL.md целиком без несущих правил, хотя правила пронумерованы (AD/RM/NW).
+  per-task verify запускал команды после каждой таски, сжигая токены на n проверок вместо одной.
+  Валидатора нет — формат дрейфовал: в реальных планах ключ превратился в
+  "⚠️ read_before_implementation" с эмодзи и пробелом.
+
+decision: >
+  Таска плана делится на два слоя. Human-слой вырезается автоматизацией перед подачей исполнителю:
+  review — «зачем и как» на русском (2-4 предложения, понятные без чтения кода) и introduces —
+  список новых имён {name, kind, at; kind: file|class|function|var|flag|rule|endpoint} для правки
+  на этапе ревью. Агентный слой (English): title, skills как список {path, rules: [PD06, ...]} с
+  несущими правилами для слабой модели, files_to_create {path, description}, files_to_modify
+  {path, changes}, constraints — DO NOT CHANGE-инварианты и запреты, depends_on, acceptance —
+  проверяемые условия готовности. description удалён: «что» живёт в title и review, механика —
+  только в changes и description файла. per-task verify удалён; единственный verify-блок в конце
+  файла запускается один раз после реализации всех тасок. Шапка: prd — путь к исходному
+  PRD (весь контекст исполнителя — PRD + план), title всего плана. Стиль скаляров различает
+  аудитории визуально по подсветке IDE: двойные кавычки — маркер того, что читает человек
+  (review, introduces, однострочный title; рендерится зелёным); агентный текст — без кавычек,
+  plain-скаляр или folded ">" по удобству (белый). Автоматизация читает title
+  YAML-парсером, а не grep "^title:". Стандарт фиксируется как скилл docs/plan с нумерованными
+  правилами и валидатором validate_plan.py + тестами по образцу docs/prd;
+  planner/tools/schema.yaml заменяется ссылкой на стандарт.
+
+consequences:
+  positive:
+    single_audience_fields: >
+      У каждого поля ровно одна аудитория — вырезание human-слоя автоматизацией не теряет
+      контекст исполнителя.
+    editable_name_registry: >
+      Человек правит имена файлов/классов/функций в структурном introduces на ревью, до
+      реализации, а не после.
+    rule_pinning: >
+      Слабая модель получает несущие правила скила (rules: [PD06]) вместо самостоятельного
+      поиска по всему SKILL.md.
+    token_economy: >
+      Одна финальная проверка вместо n промежуточных — токены на запуск verify тратятся один раз.
+  negative:
+    names_desync_risk: >
+      introduces дублирует имена агентного слоя намеренно — рассинхрон при правке возможен и
+      ловится только дисциплиной и валидатором.
+    late_failure_detection: >
+      Ошибка ранней таски обнаружится финальным verify после реализации всех остальных — откат
+      дороже, чем при пошаговой проверке.
+    tooling_migration: >
+      planner SKILL.md, schema.yaml и скрипты full_automation (вырезка, чтение title) требуют
+      обновления под новые поля.
+
+rules:
+  human_layer_strippable: >
+    review и introduces обязаны вырезаться из плана без потери контекста исполнителя — любой факт,
+    нужный агенту, живёт в агентном слое, даже если повторяет human-слой.
+  introduces_mirrors_agent: >
+    Каждое имя из introduces встречается verbatim в агентных полях таски; правка имени на ревью
+    синхронизируется в обоих слоях до старта реализации.
+  quotes_mark_layers: >
+    Двойные кавычки — только маркер читаемого человеком (review, introduces, title); агентные
+    значения никогда не квотируются — plain-скаляр или folded ">" по выбору автора.
+  constraints_single_home: >
+    Запреты и DO NOT CHANGE-инварианты живут только в constraints — никогда в review или
+    acceptance.
+  single_final_verify: >
+    В плане ровно один verify-блок на весь файл, исполняемый после всех тасок; per-task verify
+    запрещён.
+  skills_pin_rules: >
+    Если у скила есть нумерованные правила, таска указывает критичные для себя ID в
+    skills[].rules; пустой pin допустим только для скилов без нумерации.
+  title_yaml_parsed: >
+    Пайплайны читают title через YAML-парсер, не grep "^title:" — folded-стиль ломает построчный
+    разбор.
+
+components:
+  standard: .cursor/skills/docs/plan/SKILL.md — новый скилл, нумерованные правила стандарта (создать)
+  validator: .cursor/skills/docs/tools/validate_plan.py — структура, слои, стиль скаляров (создать)
+  tests: .cursor/skills/docs/tools/test_plan_standard.py — фикстурный тест на каждое правило (создать)
+  process_planner: .cursor/skills/process-planner/SKILL.md — ссылается на docs/plan вместо tools/schema.yaml
+  stripper: "n8n/full_automation/scripts/nodes/03_validate_read_plan.sh — вырезает review и introduces
+
+rejected_alternatives:
+  keep_description_field: >
+    Оставить description в агентном слое — два расходящихся описания одного действия (description
+    и changes) путают слабую модель; «что» покрывают title и review.
+  per_task_verify: >
+    Оставить verify в каждой таске — каждая проверка запускается отдельно и тратит токены; одна
+    финальная проверка покрывает те же условия дешевле.
+  human_layer_header: >
+    Собрать весь human-слой в шапке файла (обзор + таблица имён) — теряется привязка «зачем» к
+    конкретной таске на планах из 5-6 тасок.
+  mixed_audience_field: >
+    Оставить read_before_implementation со смешанным содержимым — вырезка human-полей
+    автоматизацией теряла критичные запреты для агента; слои разделены жёстко.
+
+history:
+  v1: Принят двухслойный план - вырезаемый human-слой, pin правил, единый финальный verify; стандарт в docs/plan
+  v2: Кавычки только для human-полей и однострочного title; принудительный folded для агентного текста отменён
+  v3: >
+    plan_path удалён из шапки; имя файла plan_<two_word_name>.yaml без даты-времени; review до
+    6 предложений; skills пиннится последним проходом по готовому агентному слою — все
+    затронутые скилы.
+  v4: PRD-файл переименован в plan_standard_prd.yaml - три snake_case слова с суффиксом _prd (PD27 + discovery)
+  v5: >
+    План переехал в .claude/prd/plan_<two_word_name>.yaml — рядом со своим PRD;
+    discovery валидатора фильтрует по префиксу plan_, чтобы не подхватывать *_prd.yaml.
+  v6: Стандарт переименован в docs/plan - правила IP01-IP21, валидатор validate_plan.py, файлы plan_<name>.yaml

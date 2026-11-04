@@ -1,0 +1,360 @@
+prd: .claude/prd/0827-0-http_state_tunnel/http_state_tunnel.yaml
+
+title: "HTTP-only kill-switch, split VPN state, extract :core:tunnel"
+
+tasks:
+    -   id: S-1
+        title: "Delete :feature:example and example FeatureToggle API"
+        review: "Шаблон example уходит из Gradle, app и MainActivity. Цикл NavGraph с Home
+            исчезает вместе с модулем. С FeatureToggle снимается isExampleFeatureEnabled."
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/navigation/SKILL.md
+                rules: []
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT04]
+        files_to_modify:
+            -   path: settings.gradle.kts
+                changes: Remove include(":feature:example").
+            -   path: app/build.gradle.kts
+                changes: Remove implementation project :feature:example.
+            -   path: app/MainActivity.kt
+                changes: >
+                    Drop exampleFullscreenGraph, exampleSheetContent and their imports.
+                    Keep KillSwitchHome and killSwitchFullscreenGraph. AppBottomSheetHost
+                    may stay with an empty content lambda if the host API requires it.
+            -   path: core/featuretoggle/FeatureToggle.kt
+                changes: Remove isExampleFeatureEnabled. Keep isKillSwitchEnabled for S-2.
+            -   path: core/featuretoggle/DefaultFeatureToggle.kt
+                changes: Remove isExampleFeatureEnabled override.
+            -   path: feature/example/
+                changes: Delete the whole Gradle module directory.
+            -   path: feature/AGENTS.md
+                changes: Point the feature contract at :feature:killswitch, not example.
+        constraints:
+            - Do not edit files under feature/killswitch.
+            - Do not remove isKillSwitchEnabled yet.
+            - Do not edit .claude/prd/0827-0-proxy_kill_switch/proxy_kill_switch.yaml.
+            - >
+                Short paths feature/killswitch/<pkg>/File.kt mean
+                feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/<pkg>/File.kt.
+                Tests sit under feature/killswitch/src/test/. core/featuretoggle/File.kt and
+                app/File.kt follow the same src/main/java package layout.
+        depends_on: []
+        acceptance:
+            - settings.gradle.kts and app/build.gradle.kts have no :feature:example
+            - MainActivity does not reference exampleFullscreenGraph or exampleSheetContent
+            - FeatureToggle has no isExampleFeatureEnabled
+
+    -   id: S-2
+        title: "Remove kill-switch availability gating"
+        review: "Тумблер и тайл больше не читают AvailabilityConfig и FeatureToggle. Удаляются
+            KillSwitchAvailabilityConfig, UseCase и isKillSwitchEnabled. Фича всегда доступна."
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+                rules: [VM01, VM05]
+            -   path: .cursor/skills/tester/naming/SKILL.md
+                rules: [N01, N03]
+            -   path: .cursor/skills/tester/orbit/SKILL.md
+                rules: [OM01]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID01, ID02]
+        files_to_modify:
+            -   path: feature/killswitch/domain/KillSwitchAvailabilityConfig.kt
+                changes: Delete the file.
+            -   path: feature/killswitch/domain/KillSwitchAvailabilityUseCase.kt
+                changes: Delete the file.
+            -   path: app/AppGraph.kt
+                changes: Remove killSwitchAvailabilityUseCase accessor.
+            -   path: feature/killswitch/presentation/ui/KillSwitchViewModel.kt
+                changes: Drop KillSwitchAvailabilityUseCase. UI treats the feature as always on.
+            -   path: feature/killswitch/vpn/KillSwitchTileService.kt
+                changes: Stop reading availability. Tile togglable from endpoint plus connection.
+            -   path: core/featuretoggle/FeatureToggle.kt
+                changes: Remove isKillSwitchEnabled. Leave the interface if still needed by core.
+            -   path: core/featuretoggle/DefaultFeatureToggle.kt
+                changes: Remove isKillSwitchEnabled override. Keep AllEnabledRemoteConfigLoader.
+            -   path: feature/killswitch/src/test/KillSwitchViewModelTest.kt
+                changes: Drop availability stubs. Tests assume the feature is always available.
+        constraints:
+            - Do not add a stub AvailabilityUseCase that always returns true.
+            - Do not delete AllEnabledRemoteConfigLoader or NoOpRemoteConfigLoader.
+            - Do not implement a real remote-config backend.
+        depends_on:
+            - S-1
+        acceptance:
+            - KillSwitchAvailabilityConfig and KillSwitchAvailabilityUseCase files are gone
+            - AppGraph has no killSwitchAvailabilityUseCase
+            - KillSwitchViewModel and KillSwitchTileService do not import FeatureToggle
+
+    -   id: S-3
+        title: "Make the product protocol HTTP-only"
+        review: "Из UI, Prefs и enum уходит Socks5. Проверка эндпоинта — только HTTP.
+            TUN и hev остаются. HttpConnectSocksBridge и локальный SOCKS к hev не удаляем."
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/datasource/storage/SKILL.md
+                rules: [DS02, DS03]
+            -   path: .cursor/skills/datasource/repository/SKILL.md
+                rules: [R01]
+            -   path: .cursor/skills/presentation/compose/SKILL.md
+                rules: [CP01, CP06]
+            -   path: .cursor/skills/tester/naming/SKILL.md
+                rules: [N01, N03]
+            -   path: .cursor/skills/tester/mockk/SKILL.md
+                rules: [M01]
+            -   path: .cursor/skills/docs/readme/SKILL.md
+                rules: [RM15]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID02]
+        files_to_modify:
+            -   path: feature/killswitch/domain/ProxyProtocol.kt
+                changes: >
+                    Leave only Http. fromStored falls back to Http, never Socks5.
+            -   path: feature/killswitch/data/KillSwitchPrefs.kt
+                changes: DEFAULT_PROTOCOL is http. Prefs stay primitives.
+            -   path: feature/killswitch/data/Socks5ProxyEndpointVerifier.kt
+                changes: Delete the file.
+            -   path: feature/killswitch/data/ProtocolProxyEndpointVerifier.kt
+                changes: >
+                    Bind HttpProxyEndpointVerifier only, or delete this wrapper if it only
+                    switched on ProxyProtocol.
+            -   path: feature/killswitch/di/KillSwitchModule.kt
+                changes: Bind ProxyEndpointVerifier to the HTTP verifier.
+            -   path: feature/killswitch/presentation/ui/KillSwitchUiScreen.kt
+                changes: Remove SOCKS5 chips. Host and port only, HTTP implied.
+            -   path: feature/killswitch/presentation/ui/KillSwitchViewModel.kt
+                changes: Draft protocol is Http. Drop updateDraftProtocol if the UI has no picker.
+            -   path: feature/killswitch/src/test/ProtocolProxyEndpointVerifierTest.kt
+                changes: Rewrite or delete. No SOCKS5 branch.
+            -   path: feature/killswitch/src/test/KillSwitchStateGenerator.kt
+                changes: PROTOCOL constants are Http.
+            -   path: feature/killswitch/readme.yaml
+                changes: Document HTTP-only upstream. Do not cite plan task ids.
+        constraints:
+            - Do not delete HttpConnectSocksBridge, Socks5Tunnel, or Socks5ConnectProtocol.
+            - Do not add tun2socks, sing-box, or a second native engine.
+            - Do not change VpnService FGS type, IPv6 TUN addresses, or reconnect ordering.
+        depends_on:
+            - S-2
+        acceptance:
+            - ProxyProtocol has no Socks5 entry
+            - UI has no SOCKS5 protocol control
+            - HttpConnectSocksBridge and Socks5Tunnel still compile in the feature
+
+    -   id: S-4
+        title: "Add VpnConnectionStateHolder as the only actual-state writer"
+        review: "Сервис пишет факт туннеля в Holder. Observe склеивает endpoint из репозитория
+            и actual. setEnabled пока живёт, но сервис больше не ставит его в true при старте."
+        introduces:
+            -   name: "VpnConnectionState"
+                kind: "class"
+                at: "feature/killswitch/vpn/"
+            -   name: "VpnConnectionStateHolder"
+                kind: "class"
+                at: "feature/killswitch/vpn/"
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/kotlinStyle/dataClass/SKILL.md
+                rules: [DC01]
+            -   path: .cursor/skills/kotlinStyle/flow/SKILL.md
+                rules: [FW01]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID01, ID02]
+            -   path: .cursor/skills/domain/usecase/SKILL.md
+                rules: [UC01, UC03]
+            -   path: .cursor/skills/datasource/repository/SKILL.md
+                rules: [R01]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT02]
+            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+                rules: [VM01, VM05]
+            -   path: .cursor/skills/tester/naming/SKILL.md
+                rules: [N01, N03, N06]
+            -   path: .cursor/skills/tester/flow_testing/SKILL.md
+                rules: [FL01]
+            -   path: .cursor/skills/tester/lazy_init/SKILL.md
+                rules: [LZ01]
+            -   path: .cursor/skills/tester/mockk/SKILL.md
+                rules: [M01]
+        files_to_create:
+            -   path: feature/killswitch/vpn/VpnConnectionStateHolder.kt
+                description: >
+                    VpnConnectionState sealed type nested in this file if it has one owner.
+                    @SingleIn(AppScope) @Inject holder with StateFlow. Only ProxyVpnService
+                    calls publish methods.
+            -   path: feature/killswitch/src/test/ObserveKillSwitchStateUseCaseTest.kt
+                description: >
+                    Combine endpoint from repository with holder Connected versus Disconnected.
+        files_to_modify:
+            -   path: feature/killswitch/domain/ObserveKillSwitchStateUseCase.kt
+                changes: >
+                    Inject KillSwitchRepository and VpnConnectionStateHolder. Expose a Flow
+                    that maps endpoint plus actual connection. Filter in the consumer, not here.
+            -   path: feature/killswitch/vpn/ProxyVpnService.kt
+                changes: >
+                    Resolve holder via KillSwitchGraphOwner. On successful start publish
+                    Connected. On disconnect, failed establish, and onRevoke publish
+                    Disconnected or Failed. Do not call killSwitchRepository.setEnabled(true).
+                    Still call protect() on upstream sockets before TUN traffic.
+            -   path: feature/killswitch/vpn/KillSwitchGraphOwner.kt
+                changes: Add VpnConnectionStateHolder accessor next to killSwitchRepository.
+            -   path: app/AppGraph.kt
+                changes: Expose VpnConnectionStateHolder for the service process.
+            -   path: feature/killswitch/presentation/ui/KillSwitchViewModel.kt
+                changes: Map UI enabled from ObserveKillSwitchStateUseCase actual state.
+            -   path: feature/killswitch/vpn/KillSwitchTileService.kt
+                changes: Render tile from the same ObserveKillSwitchStateUseCase flow.
+            -   path: feature/killswitch/src/test/KillSwitchViewModelTest.kt
+                changes: Stub holder or observe use case so enabled follows actual, not setEnabled.
+        constraints:
+            - KillSwitchRepository.setEnabled remains until S-5. Do not delete it here.
+            - Do not add IPv6 TUN routes or change foregroundServiceType.
+            - Do not write VpnConnectionStateHolder from ViewModel or tile.
+        depends_on:
+            - S-3
+        acceptance:
+            - ProxyVpnService does not call setEnabled(true) on successful start
+            - ObserveKillSwitchStateUseCase combines repository endpoint with the holder
+            - Only ProxyVpnService publishes to VpnConnectionStateHolder
+
+    -   id: S-5
+        title: "Remove KillSwitchRepository.setEnabled"
+        review: "После теста тайла метод setEnabled исчезает. Desired, если нужен Toggle,
+            это отдельное имя. Репозиторий больше не хранит live isEnabled в StateFlow."
+        skills:
+            -   path: .cursor/skills/gitnexus/gitnexus-impact-analysis/SKILL.md
+                rules: []
+            -   path: .cursor/skills/datasource/repository/SKILL.md
+                rules: [R01]
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/domain/usecase/SKILL.md
+                rules: [UC01]
+            -   path: .cursor/skills/tester/naming/SKILL.md
+                rules: [N01, N03]
+            -   path: .cursor/skills/tester/mockk/SKILL.md
+                rules: [M01]
+            -   path: .cursor/skills/tester/class_structure/SKILL.md
+                rules: [CS01]
+        files_to_create:
+            -   path: feature/killswitch/src/test/KillSwitchTileServiceTest.kt
+                description: >
+                    Tile reflects holder Connected as active. Must exist before setEnabled
+                    is deleted so the tile is not a silent broken dependent.
+        files_to_modify:
+            -   path: feature/killswitch/data/KillSwitchRepository.kt
+                changes: >
+                    Delete setEnabled. settingsFlow carries endpoint only. If Toggle still
+                    needs a persisted desired flag, add setDesiredEnabled as a Pref primitive,
+                    not a live VPN flag.
+            -   path: feature/killswitch/data/KillSwitchRepository.kt
+                changes: >
+                    Remove isEnabled from KillSwitchSettings in this file if it is a
+                    sibling data class. Endpoint-only settings remain.
+            -   path: feature/killswitch/domain/ToggleKillSwitchUseCase.kt
+                changes: Start and stop via service intents or desired flag, never setEnabled.
+            -   path: feature/killswitch/src/test/KillSwitchRepositoryTest.kt
+                changes: Drop the vpn-stops-then-settings-disabled case that called setEnabled.
+            -   path: feature/killswitch/src/test/ToggleKillSwitchUseCaseTest.kt
+                changes: Stop stubbing setEnabled.
+        constraints:
+            - Run GitNexus impact on KillSwitchRepository before deleting setEnabled.
+            - Warn if risk is HIGH or CRITICAL and stop.
+            - Update every former setEnabled caller, including the tile.
+        depends_on:
+            - S-4
+        acceptance:
+            - KillSwitchRepository has no setEnabled method
+            - KillSwitchTileServiceTest exists and compiles
+            - No production Kotlin references setEnabled on KillSwitchRepository
+
+    -   id: S-6
+        title: "Extract TunnelEngine into :core:tunnel"
+        review: "NDK, cpp hev и JNI уезжают в :core:tunnel за TunnelEngine. Фича зависит от
+            модуля и больше не объявляет externalNativeBuild. Класс JNI в этом же ходе не
+            переименовываем."
+        introduces:
+            -   name: "TunnelEngine"
+                kind: "class"
+                at: "core/tunnel/"
+            -   name: "core/tunnel/build.gradle.kts"
+                kind: "file"
+                at: "core/tunnel/"
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT04]
+            -   path: .cursor/skills/docs/readme/SKILL.md
+                rules: [RM15]
+        files_to_create:
+            -   path: core/tunnel/build.gradle.kts
+                description: >
+                    Android library. Move ndk abiFilters, ndkBuild path, APP_CFLAGS PKGname
+                    and CLSNAME=Socks5Tunnel from the feature. Depend on Android Vpn types
+                    as needed. Namespace mobi.tarantino.proxykillswitcher.core.tunnel.
+            -   path: core/tunnel/TunnelEngine.kt
+                description: >
+                    Interface start(tunFd, config) and stop. Socks5Tunnel implements it
+                    without renaming the JNI class.
+            -   path: core/tunnel/AGENTS.md
+                description: Pointer that native and JNI live here, product UI stays in killswitch.
+        files_to_modify:
+            -   path: settings.gradle.kts
+                changes: include(":core:tunnel").
+            -   path: feature/killswitch/build.gradle.kts
+                changes: >
+                    Remove externalNativeBuild and ndk blocks. implementation project
+                    :core:tunnel.
+            -   path: feature/killswitch/src/main/cpp/
+                changes: Move hev-socks5-tunnel tree to core/tunnel/src/main/cpp/.
+            -   path: feature/killswitch/vpn/Socks5Tunnel.kt
+                changes: >
+                    Move the class with the cpp to :core:tunnel keeping the JNI name
+                    Socks5Tunnel and updating PKGNAME to the new package in Android.mk flags.
+            -   path: feature/killswitch/vpn/ProxyVpnService.kt
+                changes: Depend on TunnelEngine. Do not construct native details inline.
+            -   path: feature/killswitch/readme.yaml
+                changes: Engine lives in :core:tunnel. No plan task ids.
+        constraints:
+            - Do not rename the JNI class Socks5Tunnel in this task.
+            - Do not patch lwip or other vendored C.
+            - Do not change FGS type, IPv6 routes, or reconnect ordering.
+            - Keep protect() on upstream sockets.
+        depends_on:
+            - S-5
+        acceptance:
+            - feature/killswitch/build.gradle.kts has no externalNativeBuild
+            - settings.gradle.kts includes :core:tunnel
+            - TunnelEngine is the type ProxyVpnService starts and stops
+
+    -   id: S-7
+        title: "Align the branch diff with project skill rules"
+        review: "Финальный проход стилиста по всему диффу ветки. Только нарушения с id
+            правила. Поведение и API не менять. В конце — ktlint, detekt и test."
+        skills:
+            -   path: .cursor/skills/process-stylist/SKILL.md
+                rules: []
+        files_to_modify:
+            -   path: whole branch diff
+                changes: >
+                    Follow .cursor/skills/process-stylist/SKILL.md. Audit set is the diff
+                    against git merge-base main HEAD plus uncommitted changes; fix only
+                    violations citing a rule id, then run the validators once.
+        constraints:
+            - Never change behavior; no refactoring beyond cited violations.
+        depends_on:
+            - S-6
+        acceptance:
+            - every command in the top-level verify block exits 0
+
+verify: |
+    ./gradlew ktlintCheck detekt test

@@ -1,0 +1,50 @@
+meta:
+  id_format: "{PREFIX}{nn} — prefix per category, nn = sequential within category"
+  categories:
+    datasource:
+      loader: "LD01-LD02"
+      repository: "R01-R01"
+      storage: "DS01-DS04"
+    diMetro:
+      metro: "MT01-MT04"
+    docs:
+      plan: "IP01-IP21"
+      prd: "PD01-PD27"
+      readme: "RM01-RM16"
+    domain:
+      availabilityConfig: "AC01-AC05"
+      availabilityUsecase: "AU01-AU05"
+      preloader: "PR01-PR01"
+      usecase: "UC01-UC03"
+    kotlinStyle:
+      dataClass: "DC01-DC01"
+      flow: "FW01-FW01"
+      idiomatic: "ID01-ID04"
+      lambda: "LA01-LA01"
+      selfDocumenting: "SD01-SD06"
+    presentation:
+      compose: "CP01-CP13"
+      viewmodel: "VM01-VM14"
+    tester:
+      assertions: "A01-A07"
+      class_structure: "CS01-CS09"
+      cleanup: "CL01-CL02"
+      companion_object: "CO01-CO05"
+      coroutines: "CR01-CR12"
+      flow_testing: "FL01-FL06"
+      generators: "G01-G08"
+      helper_functions: "H01-H04"
+      lazy_init: "LZ01-LZ05"
+      mockk: "M01-M10"
+      naming: "N01-N12"
+      orbit: "OM01-OM05"
+      parameterized: "PT01-PT04"
+
+scopes:
+  - datasource
+  - diMetro
+  - domain
+  - kotlinStyle
+  - navigation
+  - presentation
+  - tester
