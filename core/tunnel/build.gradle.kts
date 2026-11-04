@@ -7,6 +7,7 @@ android {
     namespace = "mobi.tarantino.proxykillswitcher.core.tunnel"
 
     defaultConfig {
+        consumerProguardFiles("consumer-rules.pro")
         ndk {
             abiFilters += listOf("arm64-v8a", "x86_64")
         }
