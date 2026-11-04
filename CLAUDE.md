@@ -9,7 +9,13 @@ All changes MUST go through Pull/Merge Requests. Direct commits and pushes to `m
    - Implement changes and run verification: `./gradlew ktlintCheck detekt test`.
    - Commit with clear message.
    - Push feature branch to origin: `git push -u origin feature/<name>`.
-   - Prepare MR/PR against `main` for review.
+   - **Create Pull Request immediately as part of delivery (`.skills/process-delivery/SKILL.md`)**:
+     - **Title**: short, concise summary (e.g. `feat(killswitch): add socks5 authentication`).
+     - **Description**: mandatory structured summary of incoming changes:
+       - `### Что изменилось` (bullet points explaining what came in the PR)
+       - `### Зачем` (motivation/goal)
+       - `### Проверка` (validation commands and results)
+     - Present the PR link and incoming changes description to the user.
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
