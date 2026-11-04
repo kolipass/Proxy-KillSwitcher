@@ -1,18 +1,11 @@
 # ProxyKillSwitcher
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="140" />
-</p>
+![ProxyKillSwitcher Icon](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/launcher_icon.png)
 
-<p align="center">
-  <strong>Minimalist, utility-first Android IPv4 kill-switch and HTTP CONNECT proxy tunnel.</strong><br>
-  <em>Минималистичный системный IPv4 kill-switch и HTTP CONNECT прокси-туннель для Android.</em>
-</p>
+**Minimalist, utility-first Android IPv4 kill-switch and HTTP CONNECT proxy tunnel.**  
+*Минималистичный системный IPv4 kill-switch и HTTP CONNECT прокси-туннель для Android.*
 
-<p align="center">
-  <a href="#-english"><strong>English</strong></a> • 
-  <a href="#-русский"><strong>Русский</strong></a>
-</p>
+[English](#-english) • [Русский](#-русский)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Android-3DDC84?style=flat&logo=android&logoColor=white" alt="Platform: Android" />
