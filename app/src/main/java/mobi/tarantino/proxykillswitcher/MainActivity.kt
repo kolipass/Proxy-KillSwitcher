@@ -35,15 +35,20 @@ class MainActivity : ComponentActivity() {
                 LocalAppNavigator provides navigator,
             ) {
                 AppTheme {
-                    Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
-                        FullscreenNavHost(
-                            navController = navigator.fullscreenNavController,
-                            startDestination = KillSwitchHome,
-                        ) {
-                            killSwitchFullscreenGraph()
+                    androidx.compose.material3.Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.background,
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+                            FullscreenNavHost(
+                                navController = navigator.fullscreenNavController,
+                                startDestination = KillSwitchHome,
+                            ) {
+                                killSwitchFullscreenGraph()
+                            }
                         }
+                        AppBottomSheetHost(navigator) { }
                     }
-                    AppBottomSheetHost(navigator) { }
                 }
             }
         }
