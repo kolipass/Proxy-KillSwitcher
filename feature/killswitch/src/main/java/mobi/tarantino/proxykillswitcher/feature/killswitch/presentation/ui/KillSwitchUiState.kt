@@ -14,6 +14,7 @@ data class KillSwitchState(
     val isEnabled: Boolean,
     val isConnecting: Boolean = false,
     val proxyCheck: ProxyCheck = ProxyCheck.Idle,
+    val hasSavedProxies: Boolean = false,
 ) {
     fun isDraftReadyToSave(): Boolean {
         val draftPort = draftPortText.toIntOrNull()

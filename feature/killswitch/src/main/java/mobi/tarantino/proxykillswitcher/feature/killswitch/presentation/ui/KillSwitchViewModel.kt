@@ -74,7 +74,13 @@ class KillSwitchViewModel
 
         private fun openSavedProxyList() {
             intent {
-                postSideEffect(KillSwitchSideEffect.OpenSavedProxyList)
+                postSideEffect(
+                    if (state.hasSavedProxies) {
+                        KillSwitchSideEffect.OpenSavedProxyList
+                    } else {
+                        KillSwitchSideEffect.OpenAddProxy
+                    },
+                )
             }
         }
 
@@ -174,6 +180,7 @@ class KillSwitchViewModel
                         protocol = updatedPersistedState.protocol,
                         isEnabled = updatedPersistedState.isEnabled,
                         isConnecting = state.isConnecting && !hasConnectionStateChanged,
+                        hasSavedProxies = updatedPersistedState.hasSavedProxies,
                     )
                 }
                 if (hasJustFailed) {
@@ -192,6 +199,7 @@ class KillSwitchViewModel
                 draftPortText = settings.port.toString(),
                 draftProtocol = settings.protocol,
                 isEnabled = observedState.connectionState is VpnConnectionState.Connected,
+                hasSavedProxies = settings.savedEndpoints.isNotEmpty(),
             )
         }
     }
@@ -228,4 +236,6 @@ sealed interface KillSwitchSideEffect {
     data object ConnectionFailed : KillSwitchSideEffect
 
     data object OpenSavedProxyList : KillSwitchSideEffect
+
+    data object OpenAddProxy : KillSwitchSideEffect
 }
