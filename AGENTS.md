@@ -28,6 +28,7 @@ Read the skill and follow its Required Algorithm. Do not skip steps.
 | `/process-scout`, research a problem, discuss a future PRD | `.skills/process-scout/SKILL.md` |
 | `/process-planner`, «Составь детальный план», compose an Implementation Plan | `.skills/process-planner/SKILL.md` |
 | `/process-stylist`, bring the branch in line with project style | `.skills/process-stylist/SKILL.md` |
+| `/process-delivery`, «Сделай PR», push branch and create Pull Request | `.skills/process-delivery/SKILL.md` |
 | `/process-tinker`, add a rule, add a sub-skill, author a skill | `.skills/process-tinker/SKILL.md` |
 
 Scout writes a PRD. Planner writes a plan. Neither writes product code.
@@ -73,7 +74,13 @@ All changes MUST go through Pull/Merge Requests. Direct commits and pushes to `m
    - Implement changes and run verification: `./gradlew ktlintCheck detekt test`.
    - Commit with clear message.
    - Push feature branch to origin: `git push -u origin feature/<name>`.
-   - Prepare MR/PR against `main` for review.
+   - **Create Pull Request immediately as part of delivery (`.skills/process-delivery/SKILL.md`)**:
+     - **Title**: short, concise summary (e.g. `feat(killswitch): add socks5 authentication`).
+     - **Description**: mandatory structured summary of incoming changes:
+       - `### Что изменилось` (bullet points explaining what came in the PR)
+       - `### Зачем` (motivation/goal)
+       - `### Проверка` (validation commands and results)
+     - Present the PR link and incoming changes description to the user.
 
 ## Verify
 
