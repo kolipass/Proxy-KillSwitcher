@@ -2,4 +2,4 @@
 
 Theme, color, type. Feature screens do not own design tokens.
 
-Read `.cursor/skills/presentation/SKILL.md` (`compose`) and `.cursor/skills/kotlinStyle/SKILL.md`.
+Read `.skills/presentation/SKILL.md` (`compose`) and `.skills/kotlinStyle/SKILL.md`.
