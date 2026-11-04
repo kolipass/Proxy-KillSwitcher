@@ -1,3 +1,22 @@
+# Git & Delivery Process (MR/PR Only)
+
+All changes MUST go through Pull/Merge Requests. Direct commits and pushes to `main` are strictly forbidden:
+
+1. **Never commit directly to `main`**: Before making changes, ensure you are in a dedicated feature/fix branch created from `main`.
+2. **Branch naming**: Use `feature/<name>` for new functionality, `fix/<name>` for bug fixes, or `docs/<name>` / `refactor/<name>` where appropriate (e.g. `feature/http-killswitch`, `fix/vpn-reconnect`).
+3. **Delivery workflow**:
+   - Create and checkout branch: `git checkout -b feature/<name>` (branched off up-to-date `main`).
+   - Implement changes and run verification: `./gradlew ktlintCheck detekt test`.
+   - Commit with clear message.
+   - Push feature branch to origin: `git push -u origin feature/<name>`.
+   - **Create Pull Request immediately as part of delivery (`.skills/process-delivery/SKILL.md`)**:
+     - **Title**: short, concise summary (e.g. `feat(killswitch): add socks5 authentication`).
+     - **Description**: mandatory structured summary of incoming changes:
+       - `### Что изменилось` (bullet points explaining what came in the PR)
+       - `### Зачем` (motivation/goal)
+       - `### Проверка` (validation commands and results)
+     - Present the PR link and incoming changes description to the user.
+
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
@@ -20,6 +39,7 @@ This project is indexed by GitNexus as **proxykillswitcher** (14042 symbols, 233
 - NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
 - NEVER rename symbols with find-and-replace — use `rename` which understands the call graph.
 - NEVER commit changes without running `detect_changes()` to check affected scope.
+- NEVER commit or push directly to `main` branch — all changes must go through dedicated feature branches (`feature/<name>`, `fix/<name>`) and Pull Requests / Merge Requests.
 
 ## Resources
 
@@ -34,11 +54,11 @@ This project is indexed by GitNexus as **proxykillswitcher** (14042 symbols, 233
 
 | Task | Read this skill file |
 |------|---------------------|
-| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
-| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
-| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
-| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
-| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
-| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+| Understand architecture / "How does X work?" | `.skills/gitnexus/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.skills/gitnexus/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.skills/gitnexus/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.skills/gitnexus/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.skills/gitnexus/gitnexus-cli/SKILL.md` |
 
 <!-- gitnexus:end -->

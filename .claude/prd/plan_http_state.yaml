@@ -8,11 +8,11 @@ tasks:
         review: "Шаблон example уходит из Gradle, app и MainActivity. Цикл NavGraph с Home
             исчезает вместе с модулем. С FeatureToggle снимается isExampleFeatureEnabled."
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/navigation/SKILL.md
+            -   path: .skills/navigation/SKILL.md
                 rules: []
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT04]
         files_to_modify:
             -   path: settings.gradle.kts
@@ -52,17 +52,17 @@ tasks:
         review: "Тумблер и тайл больше не читают AvailabilityConfig и FeatureToggle. Удаляются
             KillSwitchAvailabilityConfig, UseCase и isKillSwitchEnabled. Фича всегда доступна."
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+            -   path: .skills/presentation/viewmodel/SKILL.md
                 rules: [VM01, VM05]
-            -   path: .cursor/skills/tester/naming/SKILL.md
+            -   path: .skills/tester/naming/SKILL.md
                 rules: [N01, N03]
-            -   path: .cursor/skills/tester/orbit/SKILL.md
+            -   path: .skills/tester/orbit/SKILL.md
                 rules: [OM01]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID01, ID02]
         files_to_modify:
             -   path: feature/killswitch/domain/KillSwitchAvailabilityConfig.kt
@@ -97,21 +97,21 @@ tasks:
         review: "Из UI, Prefs и enum уходит Socks5. Проверка эндпоинта — только HTTP.
             TUN и hev остаются. HttpConnectSocksBridge и локальный SOCKS к hev не удаляем."
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/datasource/storage/SKILL.md
+            -   path: .skills/datasource/storage/SKILL.md
                 rules: [DS02, DS03]
-            -   path: .cursor/skills/datasource/repository/SKILL.md
+            -   path: .skills/datasource/repository/SKILL.md
                 rules: [R01]
-            -   path: .cursor/skills/presentation/compose/SKILL.md
+            -   path: .skills/presentation/compose/SKILL.md
                 rules: [CP01, CP06]
-            -   path: .cursor/skills/tester/naming/SKILL.md
+            -   path: .skills/tester/naming/SKILL.md
                 rules: [N01, N03]
-            -   path: .cursor/skills/tester/mockk/SKILL.md
+            -   path: .skills/tester/mockk/SKILL.md
                 rules: [M01]
-            -   path: .cursor/skills/docs/readme/SKILL.md
+            -   path: .skills/docs/readme/SKILL.md
                 rules: [RM15]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID02]
         files_to_modify:
             -   path: feature/killswitch/domain/ProxyProtocol.kt
@@ -160,29 +160,29 @@ tasks:
                 kind: "class"
                 at: "feature/killswitch/vpn/"
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/kotlinStyle/dataClass/SKILL.md
+            -   path: .skills/kotlinStyle/dataClass/SKILL.md
                 rules: [DC01]
-            -   path: .cursor/skills/kotlinStyle/flow/SKILL.md
+            -   path: .skills/kotlinStyle/flow/SKILL.md
                 rules: [FW01]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID01, ID02]
-            -   path: .cursor/skills/domain/usecase/SKILL.md
+            -   path: .skills/domain/usecase/SKILL.md
                 rules: [UC01, UC03]
-            -   path: .cursor/skills/datasource/repository/SKILL.md
+            -   path: .skills/datasource/repository/SKILL.md
                 rules: [R01]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT02]
-            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+            -   path: .skills/presentation/viewmodel/SKILL.md
                 rules: [VM01, VM05]
-            -   path: .cursor/skills/tester/naming/SKILL.md
+            -   path: .skills/tester/naming/SKILL.md
                 rules: [N01, N03, N06]
-            -   path: .cursor/skills/tester/flow_testing/SKILL.md
+            -   path: .skills/tester/flow_testing/SKILL.md
                 rules: [FL01]
-            -   path: .cursor/skills/tester/lazy_init/SKILL.md
+            -   path: .skills/tester/lazy_init/SKILL.md
                 rules: [LZ01]
-            -   path: .cursor/skills/tester/mockk/SKILL.md
+            -   path: .skills/tester/mockk/SKILL.md
                 rules: [M01]
         files_to_create:
             -   path: feature/killswitch/vpn/VpnConnectionStateHolder.kt
@@ -230,19 +230,19 @@ tasks:
         review: "После теста тайла метод setEnabled исчезает. Desired, если нужен Toggle,
             это отдельное имя. Репозиторий больше не хранит live isEnabled в StateFlow."
         skills:
-            -   path: .cursor/skills/gitnexus/gitnexus-impact-analysis/SKILL.md
+            -   path: .skills/gitnexus/gitnexus-impact-analysis/SKILL.md
                 rules: []
-            -   path: .cursor/skills/datasource/repository/SKILL.md
+            -   path: .skills/datasource/repository/SKILL.md
                 rules: [R01]
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/domain/usecase/SKILL.md
+            -   path: .skills/domain/usecase/SKILL.md
                 rules: [UC01]
-            -   path: .cursor/skills/tester/naming/SKILL.md
+            -   path: .skills/tester/naming/SKILL.md
                 rules: [N01, N03]
-            -   path: .cursor/skills/tester/mockk/SKILL.md
+            -   path: .skills/tester/mockk/SKILL.md
                 rules: [M01]
-            -   path: .cursor/skills/tester/class_structure/SKILL.md
+            -   path: .skills/tester/class_structure/SKILL.md
                 rules: [CS01]
         files_to_create:
             -   path: feature/killswitch/src/test/KillSwitchTileServiceTest.kt
@@ -289,11 +289,11 @@ tasks:
                 kind: "file"
                 at: "core/tunnel/"
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT04]
-            -   path: .cursor/skills/docs/readme/SKILL.md
+            -   path: .skills/docs/readme/SKILL.md
                 rules: [RM15]
         files_to_create:
             -   path: core/tunnel/build.gradle.kts
@@ -341,12 +341,12 @@ tasks:
         review: "Финальный проход стилиста по всему диффу ветки. Только нарушения с id
             правила. Поведение и API не менять. В конце — ktlint, detekt и test."
         skills:
-            -   path: .cursor/skills/process-stylist/SKILL.md
+            -   path: .skills/process-stylist/SKILL.md
                 rules: []
         files_to_modify:
             -   path: whole branch diff
                 changes: >
-                    Follow .cursor/skills/process-stylist/SKILL.md. Audit set is the diff
+                    Follow .skills/process-stylist/SKILL.md. Audit set is the diff
                     against git merge-base main HEAD plus uncommitted changes; fix only
                     violations citing a rule id, then run the validators once.
         constraints:

@@ -15,9 +15,9 @@ tasks:
                 kind: "class"
                 at: "feature/killswitch/src/main/AndroidManifest.xml"
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/docs/readme/SKILL.md
+            -   path: .skills/docs/readme/SKILL.md
                 rules: [RM15]
         files_to_create:
             -   path: feature/killswitch/build.gradle.kts
@@ -64,15 +64,15 @@ tasks:
                 kind: "class"
                 at: "app/src/main/java/mobi/tarantino/proxykillswitcher/"
         skills:
-            -   path: .cursor/skills/datasource/storage/SKILL.md
+            -   path: .skills/datasource/storage/SKILL.md
                 rules: [DS02, DS03]
-            -   path: .cursor/skills/datasource/repository/SKILL.md
+            -   path: .skills/datasource/repository/SKILL.md
                 rules: [R01]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT02, MT03]
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID04]
         files_to_create:
             -   path: >
@@ -141,19 +141,19 @@ tasks:
                 kind: "function"
                 at: "core/featuretoggle/src/main/java/mobi/tarantino/proxykillswitcher/core/featuretoggle/"
         skills:
-            -   path: .cursor/skills/domain/usecase/SKILL.md
+            -   path: .skills/domain/usecase/SKILL.md
                 rules: [UC01, UC02, UC03]
-            -   path: .cursor/skills/domain/availabilityConfig/SKILL.md
+            -   path: .skills/domain/availabilityConfig/SKILL.md
                 rules: [AC01, AC02, AC03, AC04, AC05]
-            -   path: .cursor/skills/domain/availabilityUsecase/SKILL.md
+            -   path: .skills/domain/availabilityUsecase/SKILL.md
                 rules: [AU01, AU02, AU03, AU04]
-            -   path: .cursor/skills/kotlinStyle/flow/SKILL.md
+            -   path: .skills/kotlinStyle/flow/SKILL.md
                 rules: [FW01]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID01, ID02, ID04]
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT02]
         files_to_create:
             -   path: >
@@ -217,11 +217,11 @@ tasks:
                 kind: "class"
                 at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
         skills:
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+            -   path: .skills/kotlinStyle/idiomatic/SKILL.md
                 rules: [ID04]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01]
         files_to_create:
             -   path: >
@@ -272,17 +272,17 @@ tasks:
                 kind: "class"
                 at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
         skills:
-            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+            -   path: .skills/presentation/viewmodel/SKILL.md
                 rules: [VM01, VM02, VM04, VM05, VM06, VM07, VM08, VM09, VM10, VM11, VM12, VM13, VM14]
-            -   path: .cursor/skills/presentation/compose/SKILL.md
+            -   path: .skills/presentation/compose/SKILL.md
                 rules: [CP01, CP02, CP03, CP04, CP05, CP06, CP07, CP08, CP09, CP12, CP13]
-            -   path: .cursor/skills/diMetro/SKILL.md
+            -   path: .skills/diMetro/SKILL.md
                 rules: [MT01, MT04]
-            -   path: .cursor/skills/kotlinStyle/dataClass/SKILL.md
+            -   path: .skills/kotlinStyle/dataClass/SKILL.md
                 rules: [DC01]
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
-            -   path: .cursor/skills/navigation/SKILL.md
+            -   path: .skills/navigation/SKILL.md
                 rules: []
         files_to_create:
             -   path: >
@@ -348,27 +348,27 @@ tasks:
                 kind: "class"
                 at: "feature/killswitch/src/test/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
         skills:
-            -   path: .cursor/skills/tester/naming/SKILL.md
+            -   path: .skills/tester/naming/SKILL.md
                 rules: [N01, N02, N03, N04, N05, N06, N07, N08, N10, N11, N12]
-            -   path: .cursor/skills/tester/class_structure/SKILL.md
+            -   path: .skills/tester/class_structure/SKILL.md
                 rules: [CS01, CS02, CS03, CS04, CS05, CS06, CS07, CS08]
-            -   path: .cursor/skills/tester/lazy_init/SKILL.md
+            -   path: .skills/tester/lazy_init/SKILL.md
                 rules: [LZ01, LZ02, LZ03, LZ04, LZ05]
-            -   path: .cursor/skills/tester/mockk/SKILL.md
+            -   path: .skills/tester/mockk/SKILL.md
                 rules: [M01, M02, M03, M04, M05, M06]
-            -   path: .cursor/skills/tester/companion_object/SKILL.md
+            -   path: .skills/tester/companion_object/SKILL.md
                 rules: [CO01, CO02, CO03, CO04, CO05]
-            -   path: .cursor/skills/tester/coroutines/SKILL.md
+            -   path: .skills/tester/coroutines/SKILL.md
                 rules: [CR04, CR05, CR06, CR09, CR10, CR11]
-            -   path: .cursor/skills/tester/orbit/SKILL.md
+            -   path: .skills/tester/orbit/SKILL.md
                 rules: [OM01, OM02, OM03, OM05]
-            -   path: .cursor/skills/tester/assertions/SKILL.md
+            -   path: .skills/tester/assertions/SKILL.md
                 rules: [A01, A02, A05]
-            -   path: .cursor/skills/tester/generators/SKILL.md
+            -   path: .skills/tester/generators/SKILL.md
                 rules: [G02, G03, G04, G05, G06, G08]
-            -   path: .cursor/skills/tester/cleanup/SKILL.md
+            -   path: .skills/tester/cleanup/SKILL.md
                 rules: [CL01, CL02]
-            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+            -   path: .skills/kotlinStyle/selfDocumenting/SKILL.md
                 rules: [SD01, SD02]
         files_to_create:
             -   path: >
@@ -406,7 +406,7 @@ tasks:
                 kind: "file"
                 at: "feature/killswitch/"
         skills:
-            -   path: .cursor/skills/docs/readme/SKILL.md
+            -   path: .skills/docs/readme/SKILL.md
                 rules: [RM01, RM03, RM04, RM05, RM06, RM07, RM11, RM12, RM13, RM14, RM15, RM16]
         files_to_create:
             -   path: feature/killswitch/readme.yaml
@@ -424,12 +424,12 @@ tasks:
         review: "Финальный проход по стилю всего диффа ветки. Правится только то, на что
             есть rule id. Поведение и API не меняются. В конце ktlint, detekt, test."
         skills:
-            -   path: .cursor/skills/process-stylist/SKILL.md
+            -   path: .skills/process-stylist/SKILL.md
                 rules: []
         files_to_modify:
             -   path: whole branch diff
                 changes: >
-                    Follow .cursor/skills/process-stylist/SKILL.md. Audit set is the diff
+                    Follow .skills/process-stylist/SKILL.md. Audit set is the diff
                     against git merge-base main HEAD plus uncommitted changes; fix only
                     violations citing a rule id, then run the validators once.
         constraints:
