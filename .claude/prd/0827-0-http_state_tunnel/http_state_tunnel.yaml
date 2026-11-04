@@ -1,0 +1,119 @@
+pipeline: HTTP State Tunnel
+
+status: accepted
+
+summary:
+  problem: "После v1 в app живут шаблон example, SOCKS5 и HTTP сразу, isEnabled пишут UseCase
+    и VpnService, NDK сидит в фиче, Availability гейтит тумблер без remote config."
+  solution: "Удаляем example и availability. Протокол пользователя — только HTTP. Desired и
+    actual режем. hev уезжает в :core:tunnel. VPN сверяем с тремя правилами исходного PRD."
+  tradeoff: "Нет SOCKS5 без CONNECT и remote-kill. Движок больше не в фиче. IPv6 и тип FGS
+    в этом заходе не чиним."
+
+context: >
+  Принятый proxy_kill_switch уже дал KillSwitchHome, Prefs, ProxyVpnService и JNI hev в
+  :feature:killswitch. MainActivity.onCreate параллельно вешает exampleFullscreenGraph и
+  exampleSheetContent. FeatureToggle держит isExampleFeatureEnabled и isKillSwitchEnabled.
+  KillSwitchAvailabilityConfig плюс KillSwitchAvailabilityUseCase читают их и
+  AllEnabledRemoteConfigLoader — настоящего remote config нет. KillSwitchRepository хранит
+  host, port, protocol и isEnabled; GitNexus impact upstream MEDIUM, девять прямых зависимостей:
+  ProxyKillSwitcherApp, AppGraph, KillSwitchTileService, KillSwitchGraphOwner, Toggle/Save/Observe,
+  KillSwitchViewModel, тесты. isEnabled пишут ToggleKillSwitchUseCase и
+  ProxyVpnService.onStartCommand вместе с releaseTunnel — экран может показать включено, если
+  establish вернул null. ProxyProtocol.Socks5 и Http есть в UI и verifier; HTTP идёт через
+  HttpConnectSocksBridge, сокет всё равно hev-socks5-tunnel под feature/.../cpp. Исходный PRD
+  фиксировал SOCKS5 без CONNECT и engine в фиче; ревью это перекрыло. check() даёт цикл
+  ExampleNavGraph с ExampleHomeScreen; циклы lwip — third-party. Tile вне process traces.
+
+decision: >
+  Это срез кода, не новая фича. Удалить :feature:example целиком — settings, зависимость app,
+  MainActivity, isExampleFeatureEnabled; цикл навигации уходит с модулем. Удалить
+  KillSwitchAvailabilityConfig, KillSwitchAvailabilityUseCase и чтения из ViewModel, tile и
+  AppGraph; тумблер и тайл всегда считают фичу доступной, пока не будет отдельного PRD на
+  remote config. Пользовательский протокол только HTTP: убрать Socks5 из enum, UI, verifier и
+  дефолта Prefs. TUN и JNI остаются hev; апстрим HTTP — существующий мост, не замена движка.
+  Состояние: репозиторий — endpoint и persisted desired; VpnConnectionStateHolder пишет только
+  ProxyVpnService; ObserveKillSwitchStateUseCase склеивает; setEnabled снимается последним
+  коммитом после теста тайла. Новый :core:tunnel владеет cpp, JNI и TunnelEngine;
+  :feature:killswitch без externalNativeBuild. В этом PRD из исходных инвариантов живы только
+  полная остановка сервиса при выключении, protect() до записи в TUN и prefs-примитивы.
+  IPv6-адрес и маршрут, смена FGS на specialUse и перестановка reconnect не входят. lwip не
+  патчим. Файл proxy_kill_switch.yaml не переписываем — tradeoff SOCKS5 и engine в фиче здесь
+  явно заменены.
+
+consequences:
+  positive:
+    honest_protocol: Пользователь видит только HTTP, без чипа SOCKS5, который TUN не обслуживал как заявленный протокол.
+    actual_state: Экран и тайл читают факт туннеля из сервиса, а не оптимистичный isEnabled.
+    ndk_isolation: Юнит-тесты фичи больше не тянут native build.
+  negative:
+    socks5_users: Прокси только SOCKS5 без HTTP CONNECT больше не включаются.
+    no_remote_kill: Без AvailabilityConfig нельзя выключить фичу флагом, пока не будет нового PRD.
+    engine_moved: Появление :core:tunnel ломает прежнее «движок живёт в фиче, пока нет второго потребителя».
+    leak_scope: Dual-stack обход и неверный FGS connectedDevice остаются как в текущем коде.
+
+rules:
+  http_only_surface: >
+    Пользовательский протокол в UI, Prefs и домене — только HTTP; варианта Socks5 в
+    ProxyProtocol и связанных verifier быть не должно.
+  example_stays_gone: >
+    Модуля :feature:example и вызовов exampleFullscreenGraph / exampleSheetContent в app
+    быть не должно.
+  service_owns_actual: >
+    Фактическое состояние туннеля пишет только ProxyVpnService в VpnConnectionStateHolder;
+    репозиторий не выдаёт live isEnabled после снятия setEnabled.
+  engine_lives_core: >
+    JNI, cpp hev и TunnelEngine живут в :core:tunnel; :feature:killswitch не объявляет
+    externalNativeBuild.
+  no_fake_gating: >
+    Kill-switch UI и тайл не читают AvailabilityConfig и FeatureToggle, пока нет PRD на
+    настоящий remote config.
+  vendor_untouched: >
+    Заголовки lwip и прочий vendored C не правятся ради циклов импорта или индекса GitNexus.
+  stop_means_direct: >
+    Выключенный тумблер обязан остановить ProxyVpnService целиком — без живого TUN в leak или
+    blackhole.
+  protect_then_tun: >
+    Сокеты к HTTP-апстриму вызывают protect() до того, как трафик пишется в TUN.
+
+flow:
+  - удалить :feature:example и его регистрацию в MainActivity
+  - вырезать availability из kill-switch, AppGraph, ViewModel и тайла
+  - оставить в продукте только HTTP: enum, UI, Prefs, verifier
+  - ввести VpnConnectionStateHolder и склеить ObserveKillSwitchStateUseCase
+  - снять KillSwitchRepository.setEnabled после теста тайла
+  - вынести hev и JNI в :core:tunnel за TunnelEngine
+  - проверить на устройстве остановку сервиса и protect()
+
+components:
+  existing_prd: >
+    .claude/prd/0827-0-proxy_kill_switch/proxy_kill_switch.yaml — исходный v1, не редактировать
+  kill_switch_feature: >
+    :feature:killswitch — UI, Prefs, UseCase, ProxyVpnService
+  tunnel_core: >
+    :core:tunnel — TunnelEngine, JNI, cpp hev
+  app_graph: >
+    AppGraph — accessor для процесса сервиса и тайла, без availability
+
+paths:
+  - PRD лежит в .claude/prd/0827-0-http_state_tunnel/http_state_tunnel.yaml
+  - native после выноса — core/tunnel/src/main/cpp/hev-socks5-tunnel/
+  - VpnConnectionStateHolder рядом с vpn-пакетом фичи или в :core:tunnel, один writer — сервис
+
+setup:
+  - индекс GitNexus свежий; impact на KillSwitchRepository перед снятием setEnabled
+  - clone с submodules, если hev переводят на git submodule при выносе модуля
+
+rejected_alternatives:
+  delete_http_keep_socks5: Отклонено пользователем — выбрано удалить SOCKS5 отовсюду, оставить HTTP.
+  gate_http_chip: Прятать HTTP за флагом оставляло мёртвый код; протокол решили срезать навсегда для v1.
+  swap_tun2socks: Смена движка на gomobile отклонена — остаётся hev плюс текущий HTTP-мост.
+  ipv6_and_fgs: IPv6 fail-closed, specialUse и reorder reconnect вынесены из среза — только три правила исходного PRD.
+  freeze_repository: Заморозка хаба отклонена — нужен split desired/actual, несмотря на MEDIUM blast.
+  engine_stays_feature: Оставление NDK в фиче отклонено — вынос в :core:tunnel, хотя второго потребителя нет.
+  keep_availability: Stubs availability отклонены — слой удаляется до PRD на настоящий remote config.
+  no_second_prd: >
+    Чеклист без отдельного PRD отклонён — нужен этот файл, чтобы планировщик собрал YAML-план.
+
+history:
+  v1: согласован срез HTTP-only, split состояния, :core:tunnel, удаление example и availability

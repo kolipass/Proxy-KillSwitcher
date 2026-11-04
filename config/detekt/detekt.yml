@@ -1,0 +1,29 @@
+build:
+  maxIssues: 0
+
+style:
+  MagicNumber:
+    active: false
+  ReturnCount:
+    active: false
+  UnusedPrivateMember:
+    ignoreAnnotated:
+      - "JvmStatic"
+      - "Preview"
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - "Composable"
+
+complexity:
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 10
+
+comments:
+  active: false
+
+formatting:
+  active: false

@@ -1,0 +1,96 @@
+pipeline: Proxy Kill Switch
+
+status: accepted
+
+summary:
+  problem: "На Android смена Wi-Fi прокси спрятана в системных настройках сети: нет быстрого
+    переключателя «весь трафик через заранее указанный прокси / напрямую»."
+  solution: "Локальный VpnService: включено — TUN заворачивает трафик в сохранённый SOCKS5;
+    выключено — сервис остановлен, интернет идёт напрямую. Экран — тумблер и хост/порт."
+  tradeoff: "Системный VPN-диалог и один VPN на устройство; в v1 нет per-app, HTTP CONNECT,
+    авторизации прокси и always-on."
+
+context: >
+  Смена HTTP-прокси в Wi-Fi на Android требует нескольких экранов системных настроек и не даёт
+  мгновенно вернуть прямой выход. Нужен один тумблер: трафик устройства идёт в заранее указанный
+  прокси или напрямую. Репозиторий — зелёный скелет Metro / Orbit / Compose. Модули: :app,
+  :core:designsystem, :core:navigation, :core:common, :core:di, :core:featuretoggle,
+  :core:preloading, :feature:example. В индексе нет VpnService, TUN, прокси, Pref и DataStore.
+  AndroidManifest без INTERNET и BIND_VPN_SERVICE. Старт: MainActivity.onCreate →
+  exampleFullscreenGraph → ExampleHomeScreen. AppGraph отдаёт viewModelFactoryProvider и
+  appInitializer; фичи входят через @ContributesTo(AppScope) BindingContainer, как ExampleModule.
+  ExampleRepository — in-memory LoadingStateRepository для прелоада, не образец для тумблера.
+
+decision: >
+  Новый :feature:killswitch по контракту :feature:example, без :core:vpn. KillSwitchPrefs хранит
+  host, port, isEnabled как примитивы. KillSwitchRepository — Pref-backed sync, не
+  LoadingStateRepository. ToggleKillSwitchUseCase только пишет isEnabled; ViewModel шлёт
+  SideEffect, UiScreen делает VpnService.prepare и start/stop. Выключение останавливает сервис
+  полностью. Старт — KillSwitchHome, example остаётся шаблоном. Сервис берёт граф как
+  MainActivity: (application as ProxyKillSwitcherApp).graph. TUN (addAddress / addRoute /
+  establish) заворачивает TCP/UDP в SOCKS5; сокеты к апстриму protect(), иначе петля в TUN.
+  Движок — JNI hev-socks5-tunnel в модуле фичи. DNS при включённом режиме не обходит прокси.
+  v1: весь трафик, не per-app; без always-on, HTTP CONNECT и auth. Флаг
+  FeatureToggle.isKillSwitchEnabled плюс KillSwitchAvailabilityConfig и
+  KillSwitchAvailabilityUseCase. Context для Prefs — @Provides в :core:di.
+
+consequences:
+  positive:
+    one_tap_toggle: >
+      Пользователь переключает прокси и прямой интернет без системных Wi-Fi экранов.
+    skeleton_reuse: >
+      Фича повторяет ExampleModule, Orbit и Prefs, не вводя новый DI-стек.
+  negative:
+    vpn_slot: >
+      Локальный VPN занимает единственный слот VpnService и требует системного согласия.
+    v1_protocol_gap: >
+      HTTP CONNECT, логин прокси, IPv6 dual-stack и always-on отложены.
+
+rules:
+  stopped_means_direct: >
+    Выключенный тумблер обязан полностью остановить ProxyVpnService — TUN не оставлять
+    ни в leak, ни в blackhole.
+  protect_upstream: >
+    Сокеты к сохранённому SOCKS5 всегда protect() до записи в TUN.
+  prefs_are_primitives: >
+    Хост, порт и флаг включения живут только как примитивы Pref, не как protobuf-модель.
+  engine_stays_in_feature: >
+    JNI-туннель и ProxyVpnService остаются в :feature:killswitch, пока нет второго потребителя.
+
+flow:
+  - пользователь открывает KillSwitchHome и видит тумблер, хост и порт из Prefs
+  - сохранение пишет host/port в KillSwitchPrefs через UseCase
+  - включение: UseCase пишет isEnabled, SideEffect, UiScreen prepare+start ProxyVpnService
+  - сервис поднимает TUN и гонит трафик в SOCKS5; DNS тоже через прокси
+  - выключение останавливает сервис; дальше трафик идёт напрямую
+
+components:
+  kill_switch_feature: :feature:killswitch — UI, Prefs, UseCase, ProxyVpnService, JNI
+  prefs_base: Preferences в :core:common — делегаты SharedPreferences
+  app_graph: AppGraph — accessor для сервиса, без ручного списка фичевых биндингов
+
+paths:
+  - feature/killswitch/… зеркалит feature/example (data, domain, presentation, di, navigation)
+  - ProxyVpnService в пакете feature.killswitch.vpn
+  - KillSwitchPrefs : Preferences с host, port, isEnabled
+
+setup:
+  - INTERNET, BIND_VPN_SERVICE, foreground-уведомление VPN, POST_NOTIFICATIONS на API 33+
+  - NDK/JNI hev-socks5-tunnel в :feature:killswitch
+  - VpnService.prepare из Activity до startService
+
+rejected_alternatives:
+  system_wifi_proxy: >
+    Писать Wi-Fi прокси через Settings.Global / Accessibility / Device Owner — нет публичного
+    API без root/DO, хрупко и не покрывает мобильные данные.
+  clash_xray_client: >
+    Полный clash/xray UI и ядро — продукт-клиент прокси, а не один тумблер на заданный SOCKS5.
+  core_vpn_module: >
+    Выделять :core:vpn сейчас нечем: второго потребителя нет, переезд позже дешевле дубля.
+  always_on_vpn: >
+    addAllowedApplication и always-on меняют контракт «весь трафик / сервис выключен» — не v1.
+
+history:
+  v1: >
+    Локальный VpnService + SOCKS5 тумблер в :feature:killswitch; conservative-раскладка,
+    остальные research-агенты остановлены до отчётов

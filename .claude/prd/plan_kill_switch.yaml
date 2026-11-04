@@ -1,0 +1,442 @@
+prd: .claude/prd/0827-0-proxy_kill_switch/proxy_kill_switch.yaml
+
+title: "Add SOCKS5 kill-switch via local VpnService"
+
+tasks:
+    -   id: S-1
+        title: "Create :feature:killswitch Gradle module"
+        review: "Пустой модуль фичи по образцу example, подключённый в settings и app.
+            В манифесте INTERNET, BIND_VPN_SERVICE и имя ProxyVpnService. example не трогаем."
+        introduces:
+            -   name: "feature/killswitch/build.gradle.kts"
+                kind: "file"
+                at: "feature/killswitch/"
+            -   name: "ProxyVpnService"
+                kind: "class"
+                at: "feature/killswitch/src/main/AndroidManifest.xml"
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/docs/readme/SKILL.md
+                rules: [RM15]
+        files_to_create:
+            -   path: feature/killswitch/build.gradle.kts
+                description: >
+                    Apply mobitarantino.android.feature. Namespace
+                    mobi.tarantino.proxykillswitcher.feature.killswitch.
+                    Depend on :core:designsystem. CMake is added in S-4.
+            -   path: feature/killswitch/src/main/AndroidManifest.xml
+                description: >
+                    Declare INTERNET, POST_NOTIFICATIONS, BIND_VPN_SERVICE. Register
+                    ProxyVpnService with BIND_VPN_SERVICE, VpnService intent-filter,
+                    exported false, foregroundServiceType connectedDevice.
+            -   path: feature/killswitch/AGENTS.md
+                description: Copy the feature pointer table from feature/AGENTS.md.
+        files_to_modify:
+            -   path: settings.gradle.kts
+                changes: include :feature:killswitch next to :feature:example.
+            -   path: app/build.gradle.kts
+                changes: implementation project :feature:killswitch next to example.
+        constraints:
+            - Do not delete or rewrite :feature:example.
+            - Do not add the ProxyVpnService Kotlin class yet, only the manifest name.
+        depends_on: []
+        acceptance:
+            - Gradle configures :feature:killswitch
+            - app/build.gradle.kts depends on :feature:killswitch
+
+    -   id: S-2
+        title: "Add Preferences base, Context binding, KillSwitchPrefs and repository"
+        review: "В core common появляется Preferences с делегатами SharedPreferences.
+            Application входит в граф через Factory AppGraph. KillSwitchPrefs и
+            KillSwitchRepository хранят host, port, isEnabled как примитивы."
+        introduces:
+            -   name: "Preferences"
+                kind: "class"
+                at: "core/common/src/main/java/mobi/tarantino/proxykillswitcher/core/common/prefs/"
+            -   name: "KillSwitchPrefs"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "KillSwitchRepository"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "AppContextModule"
+                kind: "class"
+                at: "app/src/main/java/mobi/tarantino/proxykillswitcher/"
+        skills:
+            -   path: .cursor/skills/datasource/storage/SKILL.md
+                rules: [DS02, DS03]
+            -   path: .cursor/skills/datasource/repository/SKILL.md
+                rules: [R01]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT02, MT03]
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID04]
+        files_to_create:
+            -   path: >
+                    core/common/src/main/java/Preferences.kt
+                description: >
+                    Open Preferences taking Context and store name. property() delegates
+                    for String, Int, Boolean only. No business logic.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchPrefs.kt
+                description: >
+                    Inject SingleIn AppScope KillSwitchPrefs extending Preferences. Fields
+                    host, port, isEnabled. Companion NAME and keys. Package data.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchRepository.kt
+                description: >
+                    Inject SingleIn AppScope KillSwitchRepository with only KillSwitchPrefs.
+                    Sync getters and setters for host, port, isEnabled. Package data.
+            -   path: >
+                    app/src/main/java/AppContextModule.kt
+                description: >
+                    BindingContainer ContributesTo AppScope. Provides Context from
+                    Application as a foreign type.
+        files_to_modify:
+            -   path: app/src/main/java/mobi/tarantino/proxykillswitcher/AppGraph.kt
+                changes: >
+                    Add DependencyGraph Factory that accepts Provides Application. Expose
+                    killSwitchRepository for ProxyVpnService.
+            -   path: >
+                    app/src/main/java/ProxyKillSwitcherApp.kt
+                changes: >
+                    Create the graph via AppGraph.Factory.create(this) instead of
+                    createGraph without Application.
+            -   path: core/common/build.gradle.kts
+                changes: Add androidx-core-ktx if SharedPreferences needs it.
+        constraints:
+            - Pref fields stay primitives or strings. No protobuf Storage in this slice.
+            - KillSwitchRepository constructor may take only data-layer types.
+            - Provides is only for Application and Context, not for KillSwitchPrefs.
+        depends_on: [S-1]
+        acceptance:
+            - KillSwitchPrefs persists host, port, isEnabled across process reads
+            - AppGraph is created with Application
+
+    -   id: S-3
+        title: "Add availability and kill-switch use cases"
+        review: "Флаг isKillSwitchEnabled в FeatureToggle и RemoteConfig. Появляются
+            KillSwitchAvailabilityConfig и KillSwitchAvailabilityUseCase. UseCase пишет
+            isEnabled, host и port в репозиторий и не стартует сервис."
+        introduces:
+            -   name: "KillSwitchAvailabilityConfig"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "KillSwitchAvailabilityUseCase"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "ToggleKillSwitchUseCase"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "SaveProxyEndpointUseCase"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "ObserveKillSwitchStateUseCase"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "isKillSwitchEnabled"
+                kind: "function"
+                at: "core/featuretoggle/src/main/java/mobi/tarantino/proxykillswitcher/core/featuretoggle/"
+        skills:
+            -   path: .cursor/skills/domain/usecase/SKILL.md
+                rules: [UC01, UC02, UC03]
+            -   path: .cursor/skills/domain/availabilityConfig/SKILL.md
+                rules: [AC01, AC02, AC03, AC04, AC05]
+            -   path: .cursor/skills/domain/availabilityUsecase/SKILL.md
+                rules: [AU01, AU02, AU03, AU04]
+            -   path: .cursor/skills/kotlinStyle/flow/SKILL.md
+                rules: [FW01]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID01, ID02, ID04]
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT02]
+        files_to_create:
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchAvailabilityConfig.kt
+                description: >
+                    KillSwitchAvailabilityConfig from FeatureToggle and RemoteConfigLoader
+                    only. isKillSwitchAvailable plus Flow via private delegate.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchAvailabilityUseCase.kt
+                description: >
+                    KillSwitchAvailabilityUseCase wrapping the config. No extra profile.
+                    Package domain.
+            -   path: >
+                    feature/killswitch/src/main/java/ToggleKillSwitchUseCase.kt
+                description: >
+                    Writes isEnabled through KillSwitchRepository after availability check.
+                    Does not start Android services. Package domain.
+            -   path: >
+                    feature/killswitch/src/main/java/SaveProxyEndpointUseCase.kt
+                description: >
+                    Save host and port primitives through KillSwitchRepository. Package
+                    domain.
+            -   path: >
+                    feature/killswitch/src/main/java/ObserveKillSwitchStateUseCase.kt
+                description: >
+                    Exposes host, port, isEnabled for the ViewModel. Filter in the consumer.
+                    Package domain.
+        files_to_modify:
+            -   path: >
+                    core/featuretoggle/src/main/java/FeatureToggle.kt
+                changes: Add isKillSwitchEnabled method returning Boolean.
+            -   path: >
+                    core/featuretoggle/src/main/java/DefaultFeatureToggle.kt
+                changes: isKillSwitchEnabled returns true.
+            -   path: >
+                    core/featuretoggle/src/main/java/RemoteConfigLoader.kt
+                changes: >
+                    Add killSwitchRemotelyEnabled, load key kill_switch_enabled in
+                    applyLoadedConfig.
+            -   path: >
+                    core/featuretoggle/src/main/java/NoOpRemoteConfigLoader.kt
+                changes: No extra logic; default getBoolean false until applyLoadedConfig.
+        constraints:
+            - UseCase constructors must not take Pref, Context, Loader, or VpnService.
+            - Availability is checked only via KillSwitchAvailabilityUseCase.
+        depends_on: [S-2]
+        acceptance:
+            - ToggleKillSwitchUseCase persists isEnabled and does not reference VpnService
+            - KillSwitchAvailabilityConfig is false when the feature toggle is off
+
+    -   id: S-4
+        title: "Implement ProxyVpnService and SOCKS5 TUN forwarder"
+        review: "Сервис читает KillSwitchRepository из AppGraph. TUN на весь трафик, SOCKS5
+            из Prefs, protect на апстрим, DNS не в обход. Выключение закрывает TUN. JNI
+            hev-socks5-tunnel внутри фичи, не отдельный core vpn модуль."
+        introduces:
+            -   name: "ProxyVpnService"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "Socks5Tunnel"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+        skills:
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/kotlinStyle/idiomatic/SKILL.md
+                rules: [ID04]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01]
+        files_to_create:
+            -   path: >
+                    feature/killswitch/src/main/java/ProxyVpnService.kt
+                description: >
+                    VpnService subclass. Builder addAddress, addRoute 0.0.0.0/0, addDnsServer,
+                    establish. Reads host and port from graph.killSwitchRepository. Foreground
+                    notification. onDestroy closes the TUN. Package vpn.
+            -   path: >
+                    feature/killswitch/src/main/java/Socks5Tunnel.kt
+                description: >
+                    JNI wrapper around hev-socks5-tunnel. Takes TUN fd, SOCKS5 host and port.
+                    protect every upstream socket. No HTTP CONNECT. Package vpn.
+            -   path: feature/killswitch/src/main/cpp/CMakeLists.txt
+                description: >
+                    Build hev-socks5-tunnel pinned in-tree under src/main/cpp. Expose JNI
+                    for Socks5Tunnel.
+        files_to_modify:
+            -   path: feature/killswitch/build.gradle.kts
+                changes: Enable externalNativeBuild cmake at src/main/cpp/CMakeLists.txt.
+        constraints:
+            - Do not create :core:vpn.
+            - Do not use addAllowedApplication. Traffic is global.
+            - Do not enable always-on VPN APIs.
+            - Upstream sockets must call protect before TUN write.
+            - Stopping the service must leave no TUN, neither leak nor blackhole.
+        depends_on: [S-2]
+        acceptance:
+            - ProxyVpnService establishes a TUN and forwards TCP and UDP to stored SOCKS5
+            - Stopping the service removes the TUN
+
+    -   id: S-5
+        title: "Add Orbit screen, navigation, and Metro bindings"
+        review: "Экран тумблера, host и port становится startDestination. Согласие VPN и
+            start stop сервиса это SideEffect в Compose. KillSwitchModule биндит
+            KillSwitchViewModel как ExampleModule. example-граф остаётся в навигаторе."
+        introduces:
+            -   name: "KillSwitchViewModel"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "KillSwitchUiScreen"
+                kind: "function"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "KillSwitchHome"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+            -   name: "KillSwitchModule"
+                kind: "class"
+                at: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+        skills:
+            -   path: .cursor/skills/presentation/viewmodel/SKILL.md
+                rules: [VM01, VM02, VM04, VM05, VM06, VM07, VM08, VM09, VM10, VM11, VM12, VM13, VM14]
+            -   path: .cursor/skills/presentation/compose/SKILL.md
+                rules: [CP01, CP02, CP03, CP04, CP05, CP06, CP07, CP08, CP09, CP12, CP13]
+            -   path: .cursor/skills/diMetro/SKILL.md
+                rules: [MT01, MT04]
+            -   path: .cursor/skills/kotlinStyle/dataClass/SKILL.md
+                rules: [DC01]
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+            -   path: .cursor/skills/navigation/SKILL.md
+                rules: []
+        files_to_create:
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchViewModel.kt
+                description: >
+                    Stable KillSwitchViewModel with public uiStateMapper. ContainerHost of
+                    KillSwitchState and KillSwitchSideEffect. Intents ToggleClick and
+                    SaveProxy. Inject UseCases and mapper only. SideEffects PrepareVpn and
+                    StopVpn. Package presentation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchUiState.kt
+                description: >
+                    Nested KillSwitchState with domain types and Immutable UiState. Package
+                    presentation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchUiStateMapper.kt
+                description: Stable mapper with a single map(state) method. Package presentation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchUiScreen.kt
+                description: >
+                    KillSwitchUiScreen calls KillSwitchContent. viewModel T, collectAsState,
+                    collectSideEffect for VpnService.prepare and start stop. Preview plus
+                    PreviewData. Package presentation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchRoutes.kt
+                description: >
+                    Serializable data object KillSwitchHome implementing FullscreenRoute.
+                    Package navigation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchNavGraph.kt
+                description: >
+                    killSwitchFullscreenGraph composable from KillSwitchHome to UiScreen.
+                    Package navigation.
+            -   path: >
+                    feature/killswitch/src/main/java/KillSwitchModule.kt
+                description: >
+                    BindingContainer ContributesTo AppScope binds KillSwitchViewModel IntoMap
+                    ViewModelKey like ExampleModule. Package di.
+        files_to_modify:
+            -   path: app/src/main/java/mobi/tarantino/proxykillswitcher/MainActivity.kt
+                changes: >
+                    startDestination KillSwitchHome. Register killSwitchFullscreenGraph. Keep
+                    exampleFullscreenGraph registered.
+        constraints:
+            - ViewModel must not inject Repository, Prefs, or Context.
+            - Do not put toggle UI on ExampleHomeScreen.
+            - Compose must not contain SOCKS or VPN business logic.
+        depends_on: [S-3, S-4]
+        acceptance:
+            - App launches on KillSwitchHome
+            - Toggle ON runs VpnService.prepare then startService; OFF stops the service
+
+    -   id: S-6
+        title: "Add unit tests for prefs, use cases, and ViewModel"
+        review: "Тесты на запись Pref, тумблер UseCase и Orbit ViewModel. Хелпер
+            runActionAndCheckResultState в test-source core common. ProxyVpnService и JNI
+            в юнитах не гоняем."
+        introduces:
+            -   name: "runActionAndCheckResultState"
+                kind: "function"
+                at: "core/common/src/test/java/mobi/tarantino/proxykillswitcher/core/common/orbit/"
+            -   name: "KillSwitchStateGenerator"
+                kind: "class"
+                at: "feature/killswitch/src/test/java/mobi/tarantino/proxykillswitcher/feature/killswitch/"
+        skills:
+            -   path: .cursor/skills/tester/naming/SKILL.md
+                rules: [N01, N02, N03, N04, N05, N06, N07, N08, N10, N11, N12]
+            -   path: .cursor/skills/tester/class_structure/SKILL.md
+                rules: [CS01, CS02, CS03, CS04, CS05, CS06, CS07, CS08]
+            -   path: .cursor/skills/tester/lazy_init/SKILL.md
+                rules: [LZ01, LZ02, LZ03, LZ04, LZ05]
+            -   path: .cursor/skills/tester/mockk/SKILL.md
+                rules: [M01, M02, M03, M04, M05, M06]
+            -   path: .cursor/skills/tester/companion_object/SKILL.md
+                rules: [CO01, CO02, CO03, CO04, CO05]
+            -   path: .cursor/skills/tester/coroutines/SKILL.md
+                rules: [CR04, CR05, CR06, CR09, CR10, CR11]
+            -   path: .cursor/skills/tester/orbit/SKILL.md
+                rules: [OM01, OM02, OM03, OM05]
+            -   path: .cursor/skills/tester/assertions/SKILL.md
+                rules: [A01, A02, A05]
+            -   path: .cursor/skills/tester/generators/SKILL.md
+                rules: [G02, G03, G04, G05, G06, G08]
+            -   path: .cursor/skills/tester/cleanup/SKILL.md
+                rules: [CL01, CL02]
+            -   path: .cursor/skills/kotlinStyle/selfDocumenting/SKILL.md
+                rules: [SD01, SD02]
+        files_to_create:
+            -   path: >
+                    core/common/src/test/java/OrbitTestExt.kt
+                description: runActionAndCheckResultState helper used by ViewModel tests.
+            -   path: >
+                    feature/killswitch/src/test/java/KillSwitchPrefsTest.kt
+                description: Persist and read host, port, isEnabled.
+            -   path: >
+                    feature/killswitch/src/test/java/ToggleKillSwitchUseCaseTest.kt
+                description: sut, When Then names, availability gate, no VpnService mock.
+            -   path: >
+                    feature/killswitch/src/test/java/KillSwitchViewModelTest.kt
+                description: >
+                    Orbit test with runOnCreate, expectState, cancelAndIgnoreRemainingItems.
+            -   path: >
+                    feature/killswitch/src/test/java/KillSwitchStateGenerator.kt
+                description: >
+                    object generator if KillSwitchState has 3 or more fields. Test package
+                    root.
+        constraints:
+            - Name the system under test sut. Do not use relaxed mocks.
+            - Do not instrument ProxyVpnService or JNI in these unit tests.
+        depends_on: [S-5]
+        acceptance:
+            - ToggleKillSwitchUseCaseTest and KillSwitchViewModelTest pass
+            - No test starts a real VpnService
+
+    -   id: S-7
+        title: "Add feature readme.yaml"
+        review: "Короткий readme фичи: зачем тумблер, какие permission, как включить SOCKS5
+            на устройстве. Без ссылок на номера задач плана."
+        introduces:
+            -   name: "feature/killswitch/readme.yaml"
+                kind: "file"
+                at: "feature/killswitch/"
+        skills:
+            -   path: .cursor/skills/docs/readme/SKILL.md
+                rules: [RM01, RM03, RM04, RM05, RM06, RM07, RM11, RM12, RM13, RM14, RM15, RM16]
+        files_to_create:
+            -   path: feature/killswitch/readme.yaml
+                description: >
+                    pipeline, what_it_does, components, files, setup, usage, troubleshooting
+                    for VPN consent and SOCKS5. Russian prose, English paths.
+        constraints:
+            - Do not mention plan task ids.
+        depends_on: [S-5]
+        acceptance:
+            - feature/killswitch/readme.yaml has usage steps a developer can follow on device
+
+    -   id: S-8
+        title: "Run process-stylist on the branch diff"
+        review: "Финальный проход по стилю всего диффа ветки. Правится только то, на что
+            есть rule id. Поведение и API не меняются. В конце ktlint, detekt, test."
+        skills:
+            -   path: .cursor/skills/process-stylist/SKILL.md
+                rules: []
+        files_to_modify:
+            -   path: whole branch diff
+                changes: >
+                    Follow .cursor/skills/process-stylist/SKILL.md. Audit set is the diff
+                    against git merge-base main HEAD plus uncommitted changes; fix only
+                    violations citing a rule id, then run the validators once.
+        constraints:
+            - Never change behavior; no refactoring beyond cited violations.
+        depends_on: [S-6, S-7]
+        acceptance:
+            - every command in the top-level verify block exits 0
+
+verify: |
+    ./gradlew ktlintCheck detekt test
