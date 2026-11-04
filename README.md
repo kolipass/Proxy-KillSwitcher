@@ -1,7 +1,7 @@
 # ProxyKillSwitcher
 
 <p align="center">
-  <img src="./docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="160" />
+  <img src="docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="140" />
 </p>
 
 <p align="center">
@@ -27,23 +27,28 @@
 
 ## 📱 Screenshots / Скриншоты
 
-### Light Theme / Светлая тема
-
-| Home (Connected) | Home (Direct) | Saved Proxies | Proxy Editor (Verified) |
-|:---:|:---:|:---:|:---:|
-| ![Home - Connected Light](./docs/screenshots/home_connected_light.png) | ![Home - Direct Light](./docs/screenshots/home_direct_light.png) | ![Saved Proxies Light](./docs/screenshots/saved_proxies_light.png) | ![Proxy Editor Light](./docs/screenshots/proxy_editor_light.png) |
-
-### Dark Theme / Тёмная тема
-
-| Home (Connected) | Home (Direct) | Saved Proxies | Proxy Editor |
-|:---:|:---:|:---:|:---:|
-| ![Home - Connected Dark](./docs/screenshots/home_connected_dark.png) | ![Home - Direct Dark](./docs/screenshots/home_direct_dark.png) | ![Saved Proxies Dark](./docs/screenshots/saved_proxies_dark.png) | ![Proxy Editor Dark](./docs/screenshots/proxy_editor_dark.png) |
-
-### System Integration / Системная интеграция
+![ProxyKillSwitcher: Direct connection & Proxy enabled](docs/screenshots/home_screens_preview.png)
 
 <p align="center">
-  <img src="./docs/screenshots/quick_settings_tile.png" width="540" alt="Android Quick Settings Tile Integration" />
+  <em>Direct connection (VPN off) • Proxy enabled (VPN active)</em>
 </p>
+
+<details>
+<summary><strong>Дополнительные экраны и тёмная тема / More screens & Dark theme</strong></summary>
+
+<br>
+
+#### Dark Theme / Тёмная тема
+![Dark Theme Screens](docs/screenshots/home_connected_dark.png)
+
+#### Saved Proxies & Editor / Сохранённые прокси и редактор
+![Saved Proxies](docs/screenshots/saved_proxies_light.png)
+![Proxy Editor](docs/screenshots/proxy_editor_light.png)
+
+#### Quick Settings Tile / Плитка быстрых настроек Android
+![Quick Settings Tile](docs/screenshots/quick_settings_tile.png)
+
+</details>
 
 ---
 
