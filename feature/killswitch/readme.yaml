@@ -1,0 +1,65 @@
+pipeline: "Proxy Kill Switch"
+# -------------------------------------------------------------------
+what_it_does:
+  - "Сохраняет адрес HTTP CONNECT-прокси и переключает маршрутизацию IPv4-трафика устройства."
+  - "При включении поднимает локальный Android VPN и направляет трафик в сохранённый прокси."
+  - "HTTP CONNECT обслуживает TCP; DNS в этом режиме идёт через mapped DNS, UDP через HTTP не туннелируется."
+  - "При выключении полностью закрывает VPN-интерфейс и возвращает прямое подключение."
+  - "Тумблер отражает фактическое состояние VPN: пока туннель не поднят, он выключен."
+  - "Плитка Quick Settings включает и выключает тот же VPN из шторки без открытия приложения."
+  - "Плитка недоступна, пока сохранённый endpoint невалиден."
+# -------------------------------------------------------------------
+components:
+  docker_services: []
+  host_tools:
+    - "Android SDK  # собирает VpnService и интерфейс Compose"
+    - "Android NDK  # собирает встроенный hev-socks5-tunnel"
+    - "HTTP CONNECT proxy  # принимает трафик от устройства"
+# -------------------------------------------------------------------
+files:
+  module: "feature/killswitch/build.gradle.kts"
+  manifest: "feature/killswitch/src/main/AndroidManifest.xml"
+  screen: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/presentation/ui"
+  service: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/vpn/ProxyVpnService.kt"
+  tile: "feature/killswitch/src/main/java/mobi/tarantino/proxykillswitcher/feature/killswitch/vpn/KillSwitchTileService.kt"
+  engine: "core/tunnel/src/main/java/mobi/tarantino/proxykillswitcher/core/tunnel"
+  native: "core/tunnel/src/main/cpp/hev-socks5-tunnel"
+# -------------------------------------------------------------------
+setup:
+  once_per_machine:
+    command: "./gradlew :app:assembleDebug"
+    note: "Gradle установит зависимости; для native-сборки нужен Android NDK из Android Studio."
+  device:
+    command: "adb install -r app/build/outputs/apk/debug/app-debug.apk"
+    note: "На Android 13+ разрешите уведомления, чтобы видеть foreground-уведомление VPN."
+# -------------------------------------------------------------------
+usage:
+  step_01: "Запустите доступный с устройства HTTP CONNECT-прокси без авторизации."
+  step_02: "Откройте приложение, измените хост или порт, нажмите Check proxy, затем Save."
+  step_03: "Включите тумблер и подтвердите системный запрос на создание VPN."
+  step_04: "Проверьте доступ к сети: активный режим направляет трафик через выбранный прокси."
+  step_05: "Выключите тумблер, чтобы остановить сервис, закрыть TUN и вернуть прямое подключение."
+  step_06: "Откройте шторку, нажмите «Изменить», перетащите плитку Proxy VPN в активные."
+  step_07: "Тап по плитке включает VPN и закрывает шторку; при первом включении подтвердите системный запрос. Повторный тап выключает VPN, не закрывая шторку."
+# -------------------------------------------------------------------
+troubleshooting:
+  vpn_permission_missing:
+    symptom: "Тумблер возвращается в выключенное состояние."
+    diagnose:
+      - "Откройте системные настройки VPN и проверьте, разрешён ли VPN для приложения."
+    fix:
+      - "Снова включите тумблер и подтвердите системный диалог."
+  tile_greyed_out:
+    symptom: "Плитка Proxy VPN в шторке серая и не реагирует на тап."
+    diagnose:
+      - "Откройте приложение и проверьте, активен ли тумблер: плитка повторяет его доступность."
+      - "Проверьте, что сохранённый host не пустой, а port лежит в диапазоне 1..65535."
+    fix:
+      - "Сохраните валидный endpoint через Check proxy и Save, затем снова откройте шторку."
+  proxy_unreachable:
+    symptom: "После включения VPN сеть недоступна."
+    diagnose:
+      - "Проверьте доступность host и port с устройства."
+      - "HTTP CONNECT-прокси не должен требовать логин; UDP-приложения через него не проходят."
+    fix:
+      - "Выключите тумблер, исправьте endpoint, сохраните его и включите VPN снова."
