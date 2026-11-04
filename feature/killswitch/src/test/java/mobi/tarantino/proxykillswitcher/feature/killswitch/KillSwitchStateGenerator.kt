@@ -28,7 +28,9 @@ object KillSwitchStateGenerator {
             draftPortText = PORT.toString(),
             draftProtocol = PROTOCOL,
             isEnabled = false,
+            hasSavedProxies = true,
         )
+    val EMPTY_SAVED_PROXIES_STATE = INITIAL_STATE.copy(hasSavedProxies = false)
     val ENABLED_STATE = INITIAL_STATE.copy(isEnabled = true)
     val CONNECTING_STATE = INITIAL_STATE.copy(isConnecting = true)
     val CHANGED_DRAFT_STATE =
@@ -53,6 +55,7 @@ object KillSwitchStateGenerator {
             host = INITIAL_STATE.host,
             port = INITIAL_STATE.port,
             protocol = INITIAL_STATE.protocol,
+            savedEndpoints = listOf(SAVED_ENDPOINT),
         )
     val UPDATED_SETTINGS = INITIAL_SETTINGS.copy(host = UPDATED_HOST)
     val DISCONNECTED_OBSERVED_STATE =

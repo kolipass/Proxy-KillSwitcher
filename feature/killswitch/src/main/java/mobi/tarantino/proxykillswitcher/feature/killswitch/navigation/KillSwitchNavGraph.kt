@@ -16,6 +16,7 @@ fun NavGraphBuilder.killSwitchFullscreenGraph() {
         val navigator = LocalAppNavigator.current
         KillSwitchUiScreen(
             onOpenSavedProxyList = { navigator.navigate(SavedProxyList) },
+            onOpenAddProxy = { navigator.openEditor(null) },
         )
     }
     composable<SavedProxyList> {

@@ -30,7 +30,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun KillSwitchUiScreen(onOpenSavedProxyList: () -> Unit) {
+fun KillSwitchUiScreen(
+    onOpenSavedProxyList: () -> Unit,
+    onOpenAddProxy: () -> Unit,
+) {
     val viewModel = viewModel<KillSwitchViewModel>()
     val state by viewModel.collectAsState()
     val context = LocalContext.current
@@ -74,6 +77,10 @@ fun KillSwitchUiScreen(onOpenSavedProxyList: () -> Unit) {
 
             KillSwitchSideEffect.OpenSavedProxyList -> {
                 onOpenSavedProxyList()
+            }
+
+            KillSwitchSideEffect.OpenAddProxy -> {
+                onOpenAddProxy()
             }
         }
     }

@@ -19,6 +19,7 @@ import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenera
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.CONNECTED_OBSERVED_STATE
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.CONNECTING_STATE
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.DISCONNECTED_OBSERVED_STATE
+import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.EMPTY_SAVED_PROXIES_STATE
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.ENABLED_STATE
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.FAILED_OBSERVED_STATE
 import mobi.tarantino.proxykillswitcher.feature.killswitch.KillSwitchStateGenerator.INITIAL_STATE
@@ -247,6 +248,36 @@ class KillSwitchViewModelTest {
 
         verify(exactly = 1) {
             saveProxyEndpointUseCase(host = UPDATED_HOST, port = PORT, protocol = PROTOCOL)
+        }
+    }
+
+    @Test
+    suspend fun `When manage proxies clicked with saved proxies, Then saved proxy list is opened`() {
+        sut.test(testScope = testScope, initialState = INITIAL_STATE) {
+            val onCreateJob = runOnCreate()
+            sut.onIntent(KillSwitchIntent.ManageProxiesClick)
+            testScope.advanceUntilIdleAll()
+            expectSideEffect(KillSwitchSideEffect.OpenSavedProxyList)
+            cancelAndIgnoreRemainingItems()
+            onCreateJob.cancel()
+            testScope.advanceUntilIdleAll()
+        }
+    }
+
+    @Test
+    suspend fun `When manage proxies clicked with zero saved proxies, Then add proxy editor is opened`() {
+        stateFlow.value =
+            DISCONNECTED_OBSERVED_STATE.copy(
+                settings = DISCONNECTED_OBSERVED_STATE.settings.copy(savedEndpoints = emptyList()),
+            )
+        sut.test(testScope = testScope, initialState = EMPTY_SAVED_PROXIES_STATE) {
+            val onCreateJob = runOnCreate()
+            sut.onIntent(KillSwitchIntent.ManageProxiesClick)
+            testScope.advanceUntilIdleAll()
+            expectSideEffect(KillSwitchSideEffect.OpenAddProxy)
+            cancelAndIgnoreRemainingItems()
+            onCreateJob.cancel()
+            testScope.advanceUntilIdleAll()
         }
     }
 
