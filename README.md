@@ -1,7 +1,7 @@
 # ProxyKillSwitcher
 
 <p align="center">
-  <img src="docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="160" />
+  <img src="./docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="160" />
 </p>
 
 <p align="center">
@@ -31,18 +31,18 @@
 
 | Home (Connected) | Home (Direct) | Saved Proxies | Proxy Editor (Verified) |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/screenshots/home_connected_light.png" width="220" alt="Home - Connected Light" /> | <img src="docs/screenshots/home_direct_light.png" width="220" alt="Home - Direct Light" /> | <img src="docs/screenshots/saved_proxies_light.png" width="220" alt="Saved Proxies Light" /> | <img src="docs/screenshots/proxy_editor_light.png" width="220" alt="Proxy Editor Light" /> |
+| ![Home - Connected Light](./docs/screenshots/home_connected_light.png) | ![Home - Direct Light](./docs/screenshots/home_direct_light.png) | ![Saved Proxies Light](./docs/screenshots/saved_proxies_light.png) | ![Proxy Editor Light](./docs/screenshots/proxy_editor_light.png) |
 
 ### Dark Theme / Тёмная тема
 
 | Home (Connected) | Home (Direct) | Saved Proxies | Proxy Editor |
 |:---:|:---:|:---:|:---:|
-| <img src="docs/screenshots/home_connected_dark.png" width="220" alt="Home - Connected Dark" /> | <img src="docs/screenshots/home_direct_dark.png" width="220" alt="Home - Direct Dark" /> | <img src="docs/screenshots/saved_proxies_dark.png" width="220" alt="Saved Proxies Dark" /> | <img src="docs/screenshots/proxy_editor_dark.png" width="220" alt="Proxy Editor Dark" /> |
+| ![Home - Connected Dark](./docs/screenshots/home_connected_dark.png) | ![Home - Direct Dark](./docs/screenshots/home_direct_dark.png) | ![Saved Proxies Dark](./docs/screenshots/saved_proxies_dark.png) | ![Proxy Editor Dark](./docs/screenshots/proxy_editor_dark.png) |
 
 ### System Integration / Системная интеграция
 
 <p align="center">
-  <img src="docs/screenshots/quick_settings_tile.png" width="540" alt="Android Quick Settings Tile Integration" />
+  <img src="./docs/screenshots/quick_settings_tile.png" width="540" alt="Android Quick Settings Tile Integration" />
 </p>
 
 ---
