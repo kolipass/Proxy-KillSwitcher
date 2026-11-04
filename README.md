@@ -106,6 +106,12 @@ proxykillswitcher/
 ./gradlew assembleDebug
 ```
 
+#### Build Release Artifacts (APK & Bundle)
+```bash
+./scripts/build-release.sh --version-name 1.0.0 --version-code 1
+```
+See [Release Flow Guide](docs/release-flow.md) for signing setup and CI/CD documentation.
+
 #### Run Unit Tests & Linting
 ```bash
 ./gradlew test ktlintCheck detekt
@@ -173,6 +179,12 @@ proxykillswitcher/
 ```bash
 ./gradlew assembleDebug
 ```
+
+#### Собрать Release APK и AAB (Bundle)
+```bash
+./scripts/build-release.sh --version-name 1.0.0 --version-code 1
+```
+Подробное руководство по подписанию и CI/CD: [Руководство по релизному флоу](docs/release-flow.md).
 
 #### Запустить тесты и линтеры
 ```bash

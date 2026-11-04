@@ -14,3 +14,6 @@ __pycache__/
 .kotlin/
 build-logic/bin/
 bin/
+.gradle-home/
+.venv/
+.worktrees/

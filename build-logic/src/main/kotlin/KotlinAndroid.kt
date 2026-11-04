@@ -30,4 +30,9 @@ internal fun Project.configureKotlinAndroid(extension: CommonExtension<*, *, *, 
             )
         }
     }
+
+    tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+        systemProperty("user.home", rootProject.layout.projectDirectory.dir(".gradle-home").asFile.absolutePath)
+        systemProperty("maven.repo.local", rootProject.layout.projectDirectory.dir(".gradle-home/.m2/repository").asFile.absolutePath)
+    }
 }
