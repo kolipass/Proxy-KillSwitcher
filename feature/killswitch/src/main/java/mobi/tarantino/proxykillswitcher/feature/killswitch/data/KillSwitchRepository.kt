@@ -10,16 +10,21 @@ import mobi.tarantino.proxykillswitcher.core.di.AppScope
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyEndpoint
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyProtocol
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpoint
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpointsProvider
 
 @SingleIn(AppScope::class)
 @Inject
 class KillSwitchRepository
     constructor(
         private val killSwitchPrefs: KillSwitchPrefs,
-    ) {
+    ) : SavedProxyEndpointsProvider {
         private val mutableSettingsFlow = MutableStateFlow(readSettings())
 
         val settingsFlow: StateFlow<KillSwitchSettings> = mutableSettingsFlow.asStateFlow()
+
+        override fun current(): List<SavedProxyEndpoint> {
+            return settingsFlow.value.savedEndpoints
+        }
 
         val host: String
             get() = killSwitchPrefs.host

@@ -7,8 +7,12 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.IntoMap
 import mobi.tarantino.proxykillswitcher.core.di.AppScope
 import mobi.tarantino.proxykillswitcher.core.di.viewmodel.ViewModelKey
+import mobi.tarantino.proxykillswitcher.feature.killswitch.data.DefaultLanProxyScanner
 import mobi.tarantino.proxykillswitcher.feature.killswitch.data.HttpProxyEndpointVerifier
+import mobi.tarantino.proxykillswitcher.feature.killswitch.data.KillSwitchRepository
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.LanProxyScanner
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyEndpointVerifier
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpointsProvider
 import mobi.tarantino.proxykillswitcher.feature.killswitch.presentation.ui.KillSwitchViewModel
 import mobi.tarantino.proxykillswitcher.feature.killswitch.presentation.ui.SavedProxyEditorViewModel
 import mobi.tarantino.proxykillswitcher.feature.killswitch.presentation.ui.SavedProxyListViewModel
@@ -33,4 +37,10 @@ interface KillSwitchModule {
 
     @Binds
     fun bindProxyEndpointVerifier(httpProxyEndpointVerifier: HttpProxyEndpointVerifier): ProxyEndpointVerifier
+
+    @Binds
+    fun bindLanProxyScanner(defaultLanProxyScanner: DefaultLanProxyScanner): LanProxyScanner
+
+    @Binds
+    fun bindSavedProxyEndpointsProvider(killSwitchRepository: KillSwitchRepository): SavedProxyEndpointsProvider
 }

@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -86,6 +88,7 @@ private fun SavedProxyEditorContent(
         modifier =
             Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = AppDimens.SpaceScreen, vertical = 32.dp),
         verticalArrangement = Arrangement.spacedBy(AppDimens.SpaceBlock),
     ) {
@@ -94,6 +97,11 @@ private fun SavedProxyEditorContent(
         if (uiState.isFrozen) {
             SavedProxyEditorFrozenBanner()
         }
+
+        LanScanBlock(
+            lanScanUiState = uiState.lanScanUiState,
+            onIntent = onIntent,
+        )
 
         SavedProxyEditorFields(
             uiState = uiState,
@@ -311,5 +319,6 @@ private object SavedProxyEditorContentPreviewData {
             isCheckEnabled = true,
             isSaveEnabled = true,
             checkStatusText = "Proxy check succeeded",
+            lanScanUiState = LanScanUiState.Hidden,
         )
 }

@@ -4,6 +4,8 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.Inject
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.DiscoveredProxy
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.LanProxyScanner
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ObserveKillSwitchStateUseCase
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyEndpoint
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SaveProxyEndpointUseCase
@@ -24,6 +26,7 @@ class SavedProxyEditorViewModel
         private val saveProxyEndpointUseCase: SaveProxyEndpointUseCase,
         private val verifyProxyEndpointUseCase: VerifyProxyEndpointUseCase,
         private val observeKillSwitchStateUseCase: ObserveKillSwitchStateUseCase,
+        private val lanProxyScanner: LanProxyScanner,
     ) : ViewModel(),
         ContainerHost<SavedProxyEditorState, SavedProxyEditorSideEffect> {
         override val container: Container<SavedProxyEditorState, SavedProxyEditorSideEffect> =
@@ -42,6 +45,8 @@ class SavedProxyEditorViewModel
                 is SavedProxyEditorIntent.PortChanged -> updatePort(intent.portText)
                 SavedProxyEditorIntent.CheckClick -> checkEndpoint()
                 SavedProxyEditorIntent.SaveClick -> saveEndpoint()
+                is SavedProxyEditorIntent.DiscoveredProxyClick -> applyDiscoveredProxy(intent.discoveredProxy)
+                SavedProxyEditorIntent.RescanClick -> rescanLan()
             }
         }
 
@@ -56,6 +61,11 @@ class SavedProxyEditorViewModel
                             originalEndpoint = savedEndpoint,
                             isInitialized = true,
                         )
+                    }
+                    if (savedEndpoint == null && !state.isEnabled) {
+                        lanProxyScanner.scan().collect { scanState ->
+                            reduce { state.copy(lanScan = scanState) }
+                        }
                     }
                 }
             }
@@ -139,6 +149,32 @@ class SavedProxyEditorViewModel
             }
         }
 
+        private fun applyDiscoveredProxy(discoveredProxy: DiscoveredProxy) {
+            intent {
+                if (state.isEnabled) {
+                    return@intent
+                }
+                reduce {
+                    state.copy(
+                        host = discoveredProxy.host,
+                        portText = discoveredProxy.port.toString(),
+                        protocol = discoveredProxy.protocol,
+                        proxyCheck = ProxyCheck.Idle,
+                    )
+                }
+            }
+        }
+
+        private fun rescanLan() {
+            intent {
+                if (!state.isEnabled) {
+                    lanProxyScanner.scan().collect { scanState ->
+                        reduce { state.copy(lanScan = scanState) }
+                    }
+                }
+            }
+        }
+
         private suspend fun Syntax<SavedProxyEditorState, SavedProxyEditorSideEffect>.subscribeToState() {
             observeKillSwitchStateUseCase.stateFlow.collect { observedState ->
                 reduce {
@@ -173,6 +209,12 @@ sealed interface SavedProxyEditorIntent {
     data class PortChanged(
         val portText: String,
     ) : SavedProxyEditorIntent
+
+    data class DiscoveredProxyClick(
+        val discoveredProxy: DiscoveredProxy,
+    ) : SavedProxyEditorIntent
+
+    data object RescanClick : SavedProxyEditorIntent
 
     data object CheckClick : SavedProxyEditorIntent
 

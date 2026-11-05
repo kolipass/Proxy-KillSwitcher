@@ -1,6 +1,8 @@
 package mobi.tarantino.proxykillswitcher.feature.killswitch.presentation.ui
 
 import androidx.compose.runtime.Immutable
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.DiscoveredProxy
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.LanScanState
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyProtocol
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpoint
 
@@ -12,6 +14,7 @@ data class SavedProxyEditorState(
     val isEnabled: Boolean,
     val isInitialized: Boolean = false,
     val proxyCheck: ProxyCheck = ProxyCheck.Idle,
+    val lanScan: LanScanState = LanScanState.Idle,
 ) {
     sealed interface ProxyCheck {
         data object Idle : ProxyCheck
@@ -36,4 +39,20 @@ data class SavedProxyEditorUiState(
     val isCheckEnabled: Boolean,
     val isSaveEnabled: Boolean,
     val checkStatusText: String,
+    val lanScanUiState: LanScanUiState,
 )
+
+@Immutable
+sealed interface LanScanUiState {
+    data object Hidden : LanScanUiState
+
+    data object NotOnWifi : LanScanUiState
+
+    data object Scanning : LanScanUiState
+
+    data class Completed(
+        val progressText: String,
+        val elapsedText: String,
+        val found: List<DiscoveredProxy>,
+    ) : LanScanUiState
+}
