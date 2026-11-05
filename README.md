@@ -1,6 +1,8 @@
 # ProxyKillSwitcher
 
-![ProxyKillSwitcher Icon](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/launcher_icon.png)
+<p align="center">
+  <img src=".docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="128" />
+</p>
 
 **Minimalist, utility-first Android IPv4 kill-switch and HTTP CONNECT proxy tunnel.**  
 *Минималистичный системный IPv4 kill-switch и HTTP CONNECT прокси-туннель для Android.*
@@ -20,7 +22,7 @@
 
 ## 📱 Screenshots / Скриншоты
 
-![ProxyKillSwitcher: Direct connection & Proxy enabled](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/home_screens_preview.png)
+![ProxyKillSwitcher: Direct connection & Proxy enabled](.docs/screenshots/home_screens_preview.png)
 
 <p align="center">
   <em>Direct connection (VPN off) • Proxy enabled (VPN active)</em>
@@ -32,14 +34,14 @@
 <br>
 
 #### Dark Theme / Тёмная тема
-![Dark Theme Screens](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/home_connected_dark.png)
+![Dark Theme Screens](.docs/screenshots/home_connected_dark.png)
 
 #### Saved Proxies & Editor / Сохранённые прокси и редактор
-![Saved Proxies](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/saved_proxies_light.png)
-![Proxy Editor](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/proxy_editor_light.png)
+![Saved Proxies](.docs/screenshots/saved_proxies_light.png)
+![Proxy Editor](.docs/screenshots/proxy_editor_light.png)
 
 #### Quick Settings Tile / Плитка быстрых настроек Android
-![Quick Settings Tile](https://raw.githubusercontent.com/kolipass/Proxy-KillSwitcher/main/docs/screenshots/quick_settings_tile.png)
+![Quick Settings Tile](.docs/screenshots/quick_settings_tile.png)
 
 </details>
 
