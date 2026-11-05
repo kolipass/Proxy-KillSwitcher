@@ -4,10 +4,13 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.Inject
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.DeleteSavedProxyEndpointUseCase
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ObserveKillSwitchStateUseCase
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpoint
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SelectSavedProxyEndpointUseCase
+import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.VerifyProxyEndpointUseCase
 import mobi.tarantino.proxykillswitcher.feature.killswitch.vpn.VpnConnectionState
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -22,10 +25,12 @@ class SavedProxyListViewModel
         private val selectSavedProxyEndpointUseCase: SelectSavedProxyEndpointUseCase,
         private val deleteSavedProxyEndpointUseCase: DeleteSavedProxyEndpointUseCase,
         private val observeKillSwitchStateUseCase: ObserveKillSwitchStateUseCase,
+        private val verifyProxyEndpointUseCase: VerifyProxyEndpointUseCase,
     ) : ViewModel(),
         ContainerHost<SavedProxyListState, SavedProxyListSideEffect> {
         override val container: Container<SavedProxyListState, SavedProxyListSideEffect> =
             viewModelScope.container(mapState(observeKillSwitchStateUseCase.state)) {
+                checkSavedEndpoints()
                 subscribeToState()
             }
 
@@ -70,7 +75,45 @@ class SavedProxyListViewModel
 
         private suspend fun Syntax<SavedProxyListState, SavedProxyListSideEffect>.subscribeToState() {
             observeKillSwitchStateUseCase.stateFlow.collect { observedState ->
-                reduce { mapState(observedState) }
+                reduce { mapState(observedState).copy(checks = state.checks) }
+            }
+        }
+
+        private suspend fun Syntax<SavedProxyListState, SavedProxyListSideEffect>.checkSavedEndpoints() {
+            if (state.isEnabled) {
+                return
+            }
+            val endpointsToCheck = state.savedEndpoints.filter { it !in state.checks }
+            if (endpointsToCheck.isEmpty()) {
+                return
+            }
+            reduce {
+                state.copy(
+                    checks =
+                        state.checks +
+                            endpointsToCheck.associateWith { ProxyCheckStatus.InProgress },
+                )
+            }
+            coroutineScope {
+                endpointsToCheck.forEach { endpoint ->
+                    launch {
+                        val isAvailable =
+                            verifyProxyEndpointUseCase(
+                                host = endpoint.host,
+                                port = endpoint.port,
+                                protocol = endpoint.protocol,
+                            )
+                        val checkStatus =
+                            if (isAvailable) {
+                                ProxyCheckStatus.Available
+                            } else {
+                                ProxyCheckStatus.Unavailable
+                            }
+                        reduce {
+                            state.copy(checks = state.checks + (endpoint to checkStatus))
+                        }
+                    }
+                }
             }
         }
 

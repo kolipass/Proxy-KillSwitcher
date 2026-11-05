@@ -204,6 +204,8 @@ private fun SavedProxyEndpointRow(
         )
         SavedProxyEndpointAddress(
             addressText = endpoint.addressText,
+            checkStatusText = endpoint.checkStatusText,
+            checkStatusKind = endpoint.checkStatusKind,
             modifier = Modifier.weight(1f),
         )
         if (endpoint.isSelecting) {
@@ -234,6 +236,8 @@ private fun SavedProxyEndpointRow(
 @Composable
 private fun SavedProxyEndpointAddress(
     addressText: String,
+    checkStatusText: String,
+    checkStatusKind: SavedProxyListUiState.CheckStatusKind,
     modifier: Modifier = Modifier,
 ) {
     val (address, protocol) =
@@ -262,8 +266,24 @@ private fun SavedProxyEndpointAddress(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        if (checkStatusText.isNotEmpty()) {
+            Text(
+                text = checkStatusText,
+                style = MaterialTheme.typography.labelSmall,
+                color = checkStatusColor(checkStatusKind),
+            )
+        }
     }
 }
+
+@Composable
+private fun checkStatusColor(kind: SavedProxyListUiState.CheckStatusKind) =
+    when (kind) {
+        SavedProxyListUiState.CheckStatusKind.InProgress -> MaterialTheme.colorScheme.onSurfaceVariant
+        SavedProxyListUiState.CheckStatusKind.Available -> MaterialTheme.colorScheme.primary
+        SavedProxyListUiState.CheckStatusKind.Unavailable -> MaterialTheme.colorScheme.error
+        SavedProxyListUiState.CheckStatusKind.None -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
 
 @Composable
 private fun SavedProxyListHeader(onBack: () -> Unit) {
@@ -324,6 +344,8 @@ private object SavedProxyListContentPreviewData {
                         addressText = "http://192.168.1.10:1080",
                         isActive = true,
                         isSelecting = false,
+                        checkStatusText = "Checking proxy…",
+                        checkStatusKind = SavedProxyListUiState.CheckStatusKind.InProgress,
                     ),
                     SavedProxyListUiState.Endpoint(
                         savedEndpoint =
@@ -335,6 +357,21 @@ private object SavedProxyListContentPreviewData {
                         addressText = "http://10.0.0.1:8080",
                         isActive = false,
                         isSelecting = false,
+                        checkStatusText = "Proxy available",
+                        checkStatusKind = SavedProxyListUiState.CheckStatusKind.Available,
+                    ),
+                    SavedProxyListUiState.Endpoint(
+                        savedEndpoint =
+                            SavedProxyEndpoint(
+                                host = "<LITELLM-HIDDEN-IP-19402>",
+                                port = 1080,
+                                protocol = ProxyProtocol.Http,
+                            ),
+                        addressText = "http://<LITELLM-HIDDEN-IP-19402>:1080",
+                        isActive = false,
+                        isSelecting = false,
+                        checkStatusText = "Proxy unavailable",
+                        checkStatusKind = SavedProxyListUiState.CheckStatusKind.Unavailable,
                     ),
                 ),
             isFrozen = false,
