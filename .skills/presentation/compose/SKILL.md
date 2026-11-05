@@ -152,4 +152,14 @@ rules:
             @Preview(showBackground = true)
             @Composable
             private fun ExampleButtonPreview(...) { ... }
+
+    -   id: CP14
+        rule: "Take dimensions and palette tokens from proxy killswitch.pen"
+        do: |
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp, vertical = 56.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+            )
 ```
