@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -140,7 +141,7 @@ private fun SavedProxyEditorFields(
         OutlinedTextField(
             value = uiState.hostText,
             onValueChange = { host -> onIntent(SavedProxyEditorIntent.HostChanged(host)) },
-            modifier = Modifier.fillMaxWidth().height(AppDimens.FieldHeight),
+            modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = AppDimens.FieldHeight),
             enabled = !uiState.isFrozen,
             label = { Text("Proxy host", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)) },
             shape = RoundedCornerShape(AppDimens.RadiusS),
@@ -151,7 +152,7 @@ private fun SavedProxyEditorFields(
         OutlinedTextField(
             value = uiState.portText,
             onValueChange = { portText -> onIntent(SavedProxyEditorIntent.PortChanged(portText)) },
-            modifier = Modifier.fillMaxWidth().height(AppDimens.FieldHeight),
+            modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = AppDimens.FieldHeight),
             enabled = !uiState.isFrozen,
             label = { Text("Proxy port", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)) },
             shape = RoundedCornerShape(AppDimens.RadiusS),
