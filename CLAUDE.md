@@ -17,6 +17,15 @@ All changes MUST go through Pull/Merge Requests. Direct commits and pushes to `m
        - `### Проверка` (validation commands and results)
      - Present the PR link and incoming changes description to the user.
 
+## Agent Worktree Isolation
+
+All new work delegated to subagents MUST be started in a dedicated git worktree — never in the user's main working tree:
+
+1. **Always spawn subagents with `isolation: "worktree"`** so each agent works on its own isolated copy of the repo. This prevents conflicts with uncommitted changes in the user's tree and allows multiple agents to work in parallel without stepping on each other.
+2. **Never let a subagent modify files in the main working tree** unless the user explicitly asks for it.
+3. A worktree that ends up unchanged is auto-cleaned; if the agent produced changes, surface its branch/worktree path to the user and integrate the changes via the standard MR/PR workflow above (never merge into `main` directly).
+4. Work done directly by the primary session (not delegated to a subagent) still follows the branch-naming and MR/PR rules above.
+
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
