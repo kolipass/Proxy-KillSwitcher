@@ -1,7 +1,7 @@
 # ProxyKillSwitcher
 
 <p align="center">
-  <img src=".docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="128" />
+  <img src="docs/screenshots/launcher_icon.png" alt="ProxyKillSwitcher Icon" width="128" />
 </p>
 
 **Minimalist, utility-first Android IPv4 kill-switch and HTTP CONNECT proxy tunnel.**  
@@ -22,7 +22,7 @@
 
 ## 📱 Screenshots / Скриншоты
 
-![ProxyKillSwitcher: Direct connection & Proxy enabled](.docs/screenshots/home_screens_preview.png)
+![ProxyKillSwitcher: Direct connection & Proxy enabled](docs/screenshots/home_screens_preview.png)
 
 <p align="center">
   <em>Direct connection (VPN off) • Proxy enabled (VPN active)</em>
@@ -34,14 +34,14 @@
 <br>
 
 #### Dark Theme / Тёмная тема
-![Dark Theme Screens](.docs/screenshots/home_connected_dark.png)
+![Dark Theme Screens](docs/screenshots/home_connected_dark.png)
 
 #### Saved Proxies & Editor / Сохранённые прокси и редактор
-![Saved Proxies](.docs/screenshots/saved_proxies_light.png)
-![Proxy Editor](.docs/screenshots/proxy_editor_light.png)
+![Saved Proxies](docs/screenshots/saved_proxies_light.png)
+![Proxy Editor](docs/screenshots/proxy_editor_light.png)
 
 #### Quick Settings Tile / Плитка быстрых настроек Android
-![Quick Settings Tile](.docs/screenshots/quick_settings_tile.png)
+![Quick Settings Tile](docs/screenshots/quick_settings_tile.png)
 
 </details>
 

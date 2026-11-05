@@ -2,64 +2,10 @@
   "version": "2.21",
   "children": [
     {
-      "type": "text",
-      "id": "Uz3ur",
-      "x": 0,
-      "y": 0,
-      "fill": "#000000",
-      "content": "416506",
-      "fontFamily": "Inter",
-      "fontSize": 12,
-      "fontWeight": "normal"
-    },
-    {
-      "type": "frame",
-      "id": "VdrwC",
-      "x": 0,
-      "y": -240,
-      "name": "Chip",
-      "reusable": true,
-      "height": 32,
-      "cornerRadius": 8,
-      "stroke": "$outline",
-      "strokeWidth": 1,
-      "gap": 8,
-      "padding": [
-        0,
-        16
-      ],
-      "alignItems": "center",
-      "children": [
-        {
-          "type": "icon",
-          "id": "v64Rwl",
-          "x": 0,
-          "y": 0,
-          "name": "Check",
-          "enabled": false,
-          "width": 18,
-          "height": 18,
-          "icon": "check",
-          "library": "lucide",
-          "fill": "$on-background"
-        },
-        {
-          "type": "text",
-          "id": "TvTsU",
-          "name": "Label",
-          "fill": "$on-background",
-          "content": "SOCKS5",
-          "fontFamily": "$font-body",
-          "fontSize": 14,
-          "fontWeight": "normal"
-        }
-      ]
-    },
-    {
       "type": "frame",
       "id": "o76ix",
-      "x": 160,
-      "y": -240,
+      "x": 0,
+      "y": -1080,
       "name": "Text Field",
       "reusable": true,
       "width": 320,
@@ -113,8 +59,8 @@
     {
       "type": "frame",
       "id": "e7oPSA",
-      "x": 520,
-      "y": -240,
+      "x": 360,
+      "y": -1080,
       "name": "Button",
       "reusable": true,
       "fill": "$primary",
@@ -156,8 +102,8 @@
     {
       "type": "frame",
       "id": "NvMAG",
-      "x": 740,
-      "y": -240,
+      "x": 535,
+      "y": -1080,
       "name": "Switch",
       "reusable": true,
       "width": 52,
@@ -184,568 +130,10 @@
     },
     {
       "type": "frame",
-      "id": "iXmxj",
-      "x": 0,
-      "y": -1240,
-      "name": "Home / Idle — direct connection",
-      "clip": true,
-      "width": 393,
-      "height": 852,
-      "fill": "$background",
-      "layout": "vertical",
-      "gap": "$space-block",
-      "padding": [
-        56,
-        "$space-screen",
-        "$space-screen",
-        "$space-screen"
-      ],
-      "children": [
-        {
-          "type": "text",
-          "id": "SKnfP",
-          "name": "Title",
-          "fill": "$on-background",
-          "textGrowth": "fixed-width",
-          "width": "fill_container",
-          "content": "Proxy kill switch",
-          "fontFamily": "$font-body",
-          "fontSize": 22,
-          "fontWeight": "normal"
-        },
-        {
-          "type": "frame",
-          "id": "V7MxQ",
-          "name": "Status Row",
-          "width": "fill_container",
-          "justifyContent": "space_between",
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "text",
-              "id": "t8OV8c",
-              "name": "Status Label",
-              "fill": "$on-background",
-              "content": "Direct connection",
-              "fontFamily": "$font-body",
-              "fontSize": 16,
-              "fontWeight": "normal"
-            },
-            {
-              "id": "CZRvH",
-              "type": "ref",
-              "ref": "NvMAG",
-              "name": "Switch Off"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "rxDps",
-          "name": "Protocol Chips",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "QMJTo",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "SOCKS5 Selected",
-              "fill": "$secondary-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "v64Rwl": {
-                  "enabled": true
-                },
-                "TvTsU": {
-                  "content": "SOCKS5"
-                }
-              }
-            },
-            {
-              "id": "E8saDA",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "HTTP",
-              "descendants": {
-                "TvTsU": {
-                  "content": "HTTP"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "id": "R3m8X",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Host",
-          "width": "fill_container",
-          "descendants": {
-            "MWrGa": {
-              "content": "192.168.1.10"
-            },
-            "J0Us6r": {
-              "content": "Proxy host"
-            }
-          }
-        },
-        {
-          "id": "DM9uF",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Port",
-          "width": "fill_container",
-          "descendants": {
-            "MWrGa": {
-              "content": "1080"
-            },
-            "J0Us6r": {
-              "content": "Proxy port"
-            }
-          }
-        },
-        {
-          "type": "frame",
-          "id": "gRSvP",
-          "name": "Actions",
-          "width": "fill_container",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "MJAeP",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Check proxy — outlined",
-              "width": "fill_container",
-              "fill": "#00000000",
-              "stroke": "$outline",
-              "strokeWidth": 1,
-              "descendants": {
-                "dUMnI": {
-                  "stroke": "$primary"
-                },
-                "gOM1Z": {
-                  "content": "Check proxy",
-                  "fill": "$primary"
-                }
-              }
-            },
-            {
-              "id": "xHnH1",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Save proxy — filled, disabled",
-              "width": "fill_container",
-              "fill": "$disabled-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "gOM1Z": {
-                  "content": "Save proxy",
-                  "fill": "$disabled-content"
-                }
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
-      "id": "qihrn",
-      "x": 520,
-      "y": -920,
-      "name": "Actions — concept board",
-      "width": 393,
-      "fill": "$background",
-      "cornerRadius": 8,
-      "stroke": "$outline",
-      "strokeWidth": 1,
-      "layout": "vertical",
-      "gap": 24,
-      "padding": 24,
-      "children": [
-        {
-          "type": "text",
-          "id": "cCsCc",
-          "name": "Board Title",
-          "fill": "$on-background",
-          "textGrowth": "fixed-width",
-          "width": "fill_container",
-          "content": "Actions — probe, then commit",
-          "fontFamily": "$font-body",
-          "fontSize": 22,
-          "fontWeight": "normal"
-        },
-        {
-          "type": "frame",
-          "id": "uRdqQ",
-          "name": "Idle · VPN on — valid saved endpoint",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "children": [
-            {
-              "type": "text",
-              "id": "ZyK0K",
-              "name": "Caption",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Idle · VPN on — valid saved endpoint",
-              "fontFamily": "$font-body",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "frame",
-              "id": "uak50",
-              "name": "Actions",
-              "width": "fill_container",
-              "gap": "$space-inline",
-              "children": [
-                {
-                  "id": "g3SWF",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Check proxy",
-                  "width": "fill_container",
-                  "fill": "#00000000",
-                  "stroke": "$outline",
-                  "strokeWidth": 1,
-                  "descendants": {
-                    "dUMnI": {
-                      "enabled": false
-                    },
-                    "gOM1Z": {
-                      "content": "Check proxy",
-                      "fill": "$primary"
-                    }
-                  }
-                },
-                {
-                  "id": "a3Rb9k",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Save proxy",
-                  "width": "fill_container",
-                  "fill": "$disabled-container",
-                  "strokeWidth": 0,
-                  "descendants": {
-                    "gOM1Z": {
-                      "content": "Save proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "S7wLe",
-          "name": "Checking",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "children": [
-            {
-              "type": "text",
-              "id": "a5QG1",
-              "name": "Caption",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Checking",
-              "fontFamily": "$font-body",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "frame",
-              "id": "CtJkX",
-              "name": "Actions",
-              "width": "fill_container",
-              "gap": "$space-inline",
-              "children": [
-                {
-                  "id": "O1Yss",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Check proxy",
-                  "width": "fill_container",
-                  "fill": "#00000000",
-                  "stroke": "$disabled-container",
-                  "strokeWidth": 1,
-                  "descendants": {
-                    "dUMnI": {
-                      "enabled": true,
-                      "stroke": "$disabled-content"
-                    },
-                    "gOM1Z": {
-                      "content": "Check proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                },
-                {
-                  "id": "usflN",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Save proxy",
-                  "width": "fill_container",
-                  "fill": "$disabled-container",
-                  "strokeWidth": 0,
-                  "descendants": {
-                    "gOM1Z": {
-                      "content": "Save proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "id": "yNIcA",
-              "name": "Status",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Checking proxy…",
-              "fontFamily": "$font-body",
-              "fontSize": 14,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "zgb9y",
-          "name": "Check succeeded · draft changed",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "children": [
-            {
-              "type": "text",
-              "id": "NWCFO",
-              "name": "Caption",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Check succeeded · draft changed",
-              "fontFamily": "$font-body",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "frame",
-              "id": "WsfNB",
-              "name": "Actions",
-              "width": "fill_container",
-              "gap": "$space-inline",
-              "children": [
-                {
-                  "id": "OmapW",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Check proxy",
-                  "width": "fill_container",
-                  "fill": "#00000000",
-                  "stroke": "$outline",
-                  "strokeWidth": 1,
-                  "descendants": {
-                    "dUMnI": {
-                      "enabled": false
-                    },
-                    "gOM1Z": {
-                      "content": "Check proxy",
-                      "fill": "$primary"
-                    }
-                  }
-                },
-                {
-                  "id": "h1uWzF",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Save proxy",
-                  "width": "fill_container",
-                  "fill": "$primary",
-                  "strokeWidth": 0,
-                  "descendants": {
-                    "gOM1Z": {
-                      "content": "Save proxy",
-                      "fill": "$on-primary"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "id": "sniTt",
-              "name": "Status",
-              "fill": "$primary",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Proxy check succeeded",
-              "fontFamily": "$font-body",
-              "fontSize": 14,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "vTOpk",
-          "name": "Check failed",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "children": [
-            {
-              "type": "text",
-              "id": "j9vcQS",
-              "name": "Caption",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Check failed",
-              "fontFamily": "$font-body",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "frame",
-              "id": "l2p8A",
-              "name": "Actions",
-              "width": "fill_container",
-              "gap": "$space-inline",
-              "children": [
-                {
-                  "id": "oXoqD",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Check proxy",
-                  "width": "fill_container",
-                  "fill": "#00000000",
-                  "stroke": "$outline",
-                  "strokeWidth": 1,
-                  "descendants": {
-                    "dUMnI": {
-                      "enabled": false
-                    },
-                    "gOM1Z": {
-                      "content": "Check proxy",
-                      "fill": "$primary"
-                    }
-                  }
-                },
-                {
-                  "id": "Rf0r8",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Save proxy",
-                  "width": "fill_container",
-                  "fill": "$disabled-container",
-                  "strokeWidth": 0,
-                  "descendants": {
-                    "gOM1Z": {
-                      "content": "Save proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "id": "kSKKs",
-              "name": "Status",
-              "fill": "$error",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Proxy check failed",
-              "fontFamily": "$font-body",
-              "fontSize": 14,
-              "fontWeight": "normal"
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "glub9",
-          "name": "First launch — empty fields",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 8,
-          "children": [
-            {
-              "type": "text",
-              "id": "StHf5",
-              "name": "Caption",
-              "fill": "$on-surface-variant",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "First launch — empty fields",
-              "fontFamily": "$font-body",
-              "fontSize": 12,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "frame",
-              "id": "M1VYgP",
-              "name": "Actions",
-              "width": "fill_container",
-              "gap": "$space-inline",
-              "children": [
-                {
-                  "id": "is46r",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Check proxy",
-                  "width": "fill_container",
-                  "fill": "#00000000",
-                  "stroke": "$disabled-container",
-                  "strokeWidth": 1,
-                  "descendants": {
-                    "dUMnI": {
-                      "enabled": false
-                    },
-                    "gOM1Z": {
-                      "content": "Check proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                },
-                {
-                  "id": "xlynU",
-                  "type": "ref",
-                  "ref": "e7oPSA",
-                  "name": "Save proxy",
-                  "width": "fill_container",
-                  "fill": "$disabled-container",
-                  "strokeWidth": 0,
-                  "descendants": {
-                    "gOM1Z": {
-                      "content": "Save proxy",
-                      "fill": "$disabled-content"
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
       "id": "Q5LopN",
-      "x": 993,
+      "x": 0,
       "y": -920,
-      "name": "Home v2 / Direct — graphic",
+      "name": "Home / Direct connection",
       "clip": true,
       "width": 393,
       "height": 852,
@@ -828,395 +216,89 @@
               ]
             },
             {
-              "type": "text",
-              "id": "TAEy0",
-              "name": "Endpoint Readout",
-              "fill": "$on-background",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "192.168.1.10:1080",
-              "fontFamily": "$font-mono",
-              "fontSize": 26,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "text",
-              "id": "TQ2oB",
-              "name": "Protocol Tag",
-              "fill": "$on-surface-variant",
-              "content": "SOCKS5",
-              "fontFamily": "$font-mono",
-              "fontSize": 12,
-              "fontWeight": "normal",
-              "letterSpacing": 1.6
-            }
-          ]
-        },
-        {
-          "type": "rectangle",
-          "id": "yTBna",
-          "name": "Rule",
-          "fill": "$hairline",
-          "width": "fill_container",
-          "height": 1
-        },
-        {
-          "type": "frame",
-          "id": "giePZ",
-          "name": "Protocol Chips",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "Kwysn",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "SOCKS5 Selected",
-              "fill": "$secondary-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "v64Rwl": {
-                  "enabled": true
-                },
-                "TvTsU": {
-                  "content": "SOCKS5"
-                }
-              }
-            },
-            {
-              "id": "RVNko",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "HTTP",
-              "descendants": {
-                "TvTsU": {
-                  "content": "HTTP"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "id": "Y1qIx9",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Host",
-          "width": "fill_container",
-          "cornerRadius": "$radius-s",
-          "descendants": {
-            "MWrGa": {
-              "content": "192.168.1.10"
-            },
-            "J0Us6r": {
-              "content": "Proxy host"
-            }
-          }
-        },
-        {
-          "id": "inBeX",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Port",
-          "width": "fill_container",
-          "cornerRadius": "$radius-s",
-          "descendants": {
-            "MWrGa": {
-              "content": "1080"
-            },
-            "J0Us6r": {
-              "content": "Proxy port"
-            }
-          }
-        },
-        {
-          "type": "frame",
-          "id": "IjXN8",
-          "name": "Actions",
-          "width": "fill_container",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "W2DXh3",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Check proxy",
-              "width": "fill_container",
-              "cornerRadius": "$radius-s",
-              "fill": "#00000000",
-              "stroke": "$outline",
-              "strokeWidth": 1,
-              "descendants": {
-                "dUMnI": {
-                  "enabled": false
-                },
-                "gOM1Z": {
-                  "content": "Check proxy",
-                  "fill": "$primary"
-                }
-              }
-            },
-            {
-              "id": "oRzmI",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Save proxy",
-              "width": "fill_container",
-              "cornerRadius": "$radius-s",
-              "fill": "$disabled-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "gOM1Z": {
-                  "content": "Save proxy",
-                  "fill": "$disabled-content"
-                }
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "frame",
-      "id": "jEiPk",
-      "x": 1453,
-      "y": -920,
-      "name": "Home v2 / Proxy enabled — graphic",
-      "clip": true,
-      "width": 393,
-      "height": 852,
-      "fill": "$background",
-      "layout": "vertical",
-      "gap": "$space-block",
-      "padding": [
-        56,
-        "$space-screen",
-        "$space-screen",
-        "$space-screen"
-      ],
-      "children": [
-        {
-          "type": "frame",
-          "id": "O7S6v4",
-          "name": "Header",
-          "width": "fill_container",
-          "layout": "vertical",
-          "gap": 12,
-          "children": [
-            {
-              "type": "text",
-              "id": "C4pa5z",
-              "name": "Title",
-              "fill": "$on-background",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "Proxy kill switch",
-              "fontFamily": "$font-body",
-              "fontSize": 22,
-              "fontWeight": "normal"
-            },
-            {
-              "type": "rectangle",
-              "id": "HYGfM",
-              "name": "Rule",
-              "fill": "$hairline",
-              "width": "fill_container",
-              "height": 1
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "M5CFHa",
-          "name": "State Block",
-          "width": "fill_container",
-          "fill": "$primary",
-          "cornerRadius": "$radius-s",
-          "layout": "vertical",
-          "gap": 14,
-          "padding": 20,
-          "children": [
-            {
               "type": "frame",
-              "id": "MeAmF",
-              "name": "State Row",
+              "id": "OoRxw",
+              "name": "Active Proxy",
               "width": "fill_container",
-              "justifyContent": "space_between",
-              "alignItems": "center",
+              "layout": "vertical",
+              "gap": 6,
               "children": [
                 {
                   "type": "text",
-                  "id": "Y90XK",
-                  "name": "State",
-                  "fill": "$on-primary",
-                  "content": "Proxy enabled",
+                  "id": "YpJXB",
+                  "name": "Caption",
+                  "fill": "$on-surface-variant",
+                  "content": "Active proxy",
                   "fontFamily": "$font-body",
-                  "fontSize": 14,
+                  "fontSize": 12,
                   "fontWeight": "normal",
                   "letterSpacing": 1.2
                 },
                 {
-                  "id": "jGM5T",
-                  "type": "ref",
-                  "ref": "NvMAG",
-                  "name": "Switch On",
-                  "fill": "$on-primary",
-                  "strokeWidth": 0,
-                  "padding": [
-                    0,
-                    4
-                  ],
-                  "justifyContent": "end",
-                  "descendants": {
-                    "Buf9R": {
-                      "width": 24,
-                      "height": 24,
-                      "fill": "$primary"
-                    }
-                  }
+                  "type": "text",
+                  "id": "TAEy0",
+                  "name": "Endpoint Readout",
+                  "fill": "$on-background",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "192.168.1.10:1080",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 26,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "TQ2oB",
+                  "name": "Protocol Tag",
+                  "fill": "$on-surface-variant",
+                  "content": "HTTP",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.6
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jUU6x",
+          "name": "Manage proxies",
+          "width": "fill_container",
+          "height": 56,
+          "stroke": "$hairline",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            4,
+            0,
+            0
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
             {
               "type": "text",
-              "id": "W0D2Dv",
-              "name": "Endpoint Readout",
-              "fill": "$on-primary",
-              "textGrowth": "fixed-width",
-              "width": "fill_container",
-              "content": "192.168.1.10:1080",
-              "fontFamily": "$font-mono",
-              "fontSize": 26,
+              "id": "mRoM8",
+              "name": "Label",
+              "fill": "$on-background",
+              "content": "Manage proxies",
+              "fontFamily": "$font-body",
+              "fontSize": 16,
               "fontWeight": "normal"
             },
             {
-              "type": "text",
-              "id": "r7Mkh",
-              "name": "Protocol Tag",
-              "fill": "$on-primary-muted",
-              "content": "SOCKS5",
-              "fontFamily": "$font-mono",
-              "fontSize": 12,
-              "fontWeight": "normal",
-              "letterSpacing": 1.6
-            }
-          ]
-        },
-        {
-          "type": "rectangle",
-          "id": "azm9i",
-          "name": "Rule",
-          "fill": "$hairline",
-          "width": "fill_container",
-          "height": 1
-        },
-        {
-          "type": "frame",
-          "id": "NMjnM",
-          "name": "Protocol Chips",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "Mt4ay",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "SOCKS5 Selected",
-              "fill": "$secondary-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "v64Rwl": {
-                  "enabled": true
-                },
-                "TvTsU": {
-                  "content": "SOCKS5"
-                }
-              }
-            },
-            {
-              "id": "nDdd3",
-              "type": "ref",
-              "ref": "VdrwC",
-              "name": "HTTP",
-              "descendants": {
-                "TvTsU": {
-                  "content": "HTTP"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "id": "vuszk",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Host",
-          "width": "fill_container",
-          "cornerRadius": "$radius-s",
-          "descendants": {
-            "MWrGa": {
-              "content": "192.168.1.10"
-            },
-            "J0Us6r": {
-              "content": "Proxy host"
-            }
-          }
-        },
-        {
-          "id": "FRlLJ",
-          "type": "ref",
-          "ref": "o76ix",
-          "name": "Proxy Port",
-          "width": "fill_container",
-          "cornerRadius": "$radius-s",
-          "descendants": {
-            "MWrGa": {
-              "content": "1080"
-            },
-            "J0Us6r": {
-              "content": "Proxy port"
-            }
-          }
-        },
-        {
-          "type": "frame",
-          "id": "x3cLb4",
-          "name": "Actions",
-          "width": "fill_container",
-          "gap": "$space-inline",
-          "children": [
-            {
-              "id": "QPDCU",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Check proxy",
-              "width": "fill_container",
-              "cornerRadius": "$radius-s",
-              "fill": "#00000000",
-              "stroke": "$outline",
-              "strokeWidth": 1,
-              "descendants": {
-                "dUMnI": {
-                  "enabled": false
-                },
-                "gOM1Z": {
-                  "content": "Check proxy",
-                  "fill": "$primary"
-                }
-              }
-            },
-            {
-              "id": "Q0roLb",
-              "type": "ref",
-              "ref": "e7oPSA",
-              "name": "Save proxy",
-              "width": "fill_container",
-              "cornerRadius": "$radius-s",
-              "fill": "$disabled-container",
-              "strokeWidth": 0,
-              "descendants": {
-                "gOM1Z": {
-                  "content": "Save proxy",
-                  "fill": "$disabled-content"
-                }
-              }
+              "type": "icon",
+              "id": "Jos5u",
+              "name": "Chevron",
+              "width": 20,
+              "height": 20,
+              "icon": "chevron-right",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
             }
           ]
         }
@@ -1225,9 +307,9 @@
     {
       "type": "frame",
       "id": "N8ELVs",
-      "x": 1943,
-      "y": -909,
-      "name": "Launcher icon — flat split concept",
+      "x": 0,
+      "y": 1996,
+      "name": "Launcher icon",
       "fill": "$background",
       "cornerRadius": "$radius-s",
       "stroke": "$hairline",
@@ -1241,21 +323,9 @@
           "id": "Y3AP7v",
           "name": "Board Title",
           "fill": "$on-background",
-          "content": "Launcher icon — flat split",
+          "content": "Launcher icon",
           "fontFamily": "$font-body",
           "fontSize": 16,
-          "fontWeight": "normal"
-        },
-        {
-          "type": "text",
-          "id": "H0T263",
-          "name": "Board Note",
-          "fill": "$on-surface-variant",
-          "textGrowth": "fixed-width",
-          "width": 424,
-          "content": "Chosen variant. Deviates from design.md principle 5 (no globes / shields); teal is outside the palette.",
-          "fontFamily": "$font-body",
-          "fontSize": 12,
           "fontWeight": "normal"
         },
         {
@@ -1859,7 +929,7 @@
               "id": "xw2Dy",
               "name": "Small Size Note",
               "fill": "$on-surface-variant",
-              "content": "48px true size",
+              "content": "48px",
               "fontFamily": "$font-mono",
               "fontSize": 11,
               "fontWeight": "normal",
@@ -1868,523 +938,2041 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "ftyrP",
+      "x": 473,
+      "y": -920,
+      "name": "Home / Proxy enabled",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "Uk7Rq",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "text",
+              "id": "C1Dny",
+              "name": "Title",
+              "fill": "$on-background",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Proxy kill switch",
+              "fontFamily": "$font-body",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "hl4OZ",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "f4gIV",
+          "name": "State Block",
+          "width": "fill_container",
+          "fill": "$primary",
+          "cornerRadius": "$radius-s",
+          "layout": "vertical",
+          "gap": 14,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "cXDHW",
+              "name": "State Row",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "U7OmX",
+                  "name": "State",
+                  "fill": "$on-primary",
+                  "content": "Proxy enabled",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "id": "esXeR",
+                  "type": "ref",
+                  "ref": "NvMAG",
+                  "fill": "$on-primary",
+                  "strokeWidth": 0,
+                  "padding": [
+                    0,
+                    4
+                  ],
+                  "justifyContent": "end",
+                  "name": "Switch Off",
+                  "descendants": {
+                    "Buf9R": {
+                      "width": 24,
+                      "height": 24,
+                      "fill": "$primary"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "LarHC",
+              "name": "Active Proxy",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "f60Ncl",
+                  "name": "Caption",
+                  "fill": "$on-primary-muted",
+                  "content": "Active proxy",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "type": "text",
+                  "id": "y1pOX",
+                  "name": "Endpoint Readout",
+                  "fill": "$on-primary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "192.168.1.10:1080",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 26,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "XgtJe",
+                  "name": "Protocol Tag",
+                  "fill": "$on-primary-muted",
+                  "content": "HTTP",
+                  "fontFamily": "$font-mono",
+                  "fontSize": 12,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "X5Esd",
+          "name": "Manage proxies",
+          "width": "fill_container",
+          "height": 56,
+          "stroke": "$hairline",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            4,
+            0,
+            0
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kic3q",
+              "name": "Label",
+              "fill": "$on-background",
+              "content": "Manage proxies",
+              "fontFamily": "$font-body",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "icon",
+              "id": "wQu2n",
+              "name": "Chevron",
+              "width": 20,
+              "height": 20,
+              "icon": "chevron-right",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "KaEd9",
+      "x": 946,
+      "y": -920,
+      "name": "Home / No proxy selected",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "awboB",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "text",
+              "id": "SxO0U",
+              "name": "Title",
+              "fill": "$on-background",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Proxy kill switch",
+              "fontFamily": "$font-body",
+              "fontSize": 22,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "yCNuy",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "u6b5ig",
+          "name": "State Block",
+          "width": "fill_container",
+          "fill": "$surface-block",
+          "cornerRadius": "$radius-s",
+          "layout": "vertical",
+          "gap": 14,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "d9LB7L",
+              "name": "State Row",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ZaLdo",
+                  "name": "State",
+                  "fill": "$on-surface-variant",
+                  "content": "Direct connection",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "id": "LEhHh",
+                  "type": "ref",
+                  "ref": "NvMAG",
+                  "fill": "#00000000",
+                  "stroke": "$disabled-container",
+                  "name": "Switch Off",
+                  "descendants": {
+                    "Buf9R": {
+                      "fill": "$disabled-content"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "a7dee",
+              "name": "Active Proxy",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "fjzhz",
+                  "name": "Caption",
+                  "fill": "$on-surface-variant",
+                  "content": "Active proxy",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1.2
+                },
+                {
+                  "type": "text",
+                  "id": "mR6X2",
+                  "name": "Endpoint Readout",
+                  "fill": "$on-surface-variant",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "No proxy selected",
+                  "fontFamily": "$font-body",
+                  "fontSize": 20,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "z8wJse",
+          "name": "Manage proxies",
+          "width": "fill_container",
+          "height": 56,
+          "stroke": "$hairline",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "padding": [
+            0,
+            4,
+            0,
+            0
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "JSewC",
+              "name": "Label",
+              "fill": "$on-background",
+              "content": "Manage proxies",
+              "fontFamily": "$font-body",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "icon",
+              "id": "H65Ksr",
+              "name": "Chevron",
+              "width": 20,
+              "height": 20,
+              "icon": "chevron-right",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "nrS94",
+          "name": "Helper",
+          "fill": "$on-surface-variant",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "Save a valid endpoint before connecting.",
+          "fontFamily": "$font-body",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "zSzEi",
+      "x": 627,
+      "y": -1080,
+      "name": "Proxy Row",
+      "reusable": true,
+      "width": 345,
+      "height": 64,
+      "stroke": "$hairline",
+      "strokeWidth": {
+        "bottom": 1
+      },
+      "gap": 16,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "va3D9",
+          "name": "Radio",
+          "width": 20,
+          "height": 20,
+          "cornerRadius": 10,
+          "stroke": "$primary",
+          "strokeWidth": 2,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "fDzDW",
+              "name": "Dot",
+              "fill": "$primary",
+              "width": 10,
+              "height": 10
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "c6nNrH",
+          "name": "Address Block",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 2,
+          "children": [
+            {
+              "type": "text",
+              "id": "oZK8m",
+              "name": "Address",
+              "fill": "$on-background",
+              "content": "192.168.1.10:1080",
+              "fontFamily": "$font-mono",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "X1rN7i",
+              "name": "Tag",
+              "fill": "$on-surface-variant",
+              "content": "HTTP",
+              "fontFamily": "$font-mono",
+              "fontSize": 12,
+              "fontWeight": "normal",
+              "letterSpacing": 1.6
+            }
+          ]
+        },
+        {
+          "type": "ellipse",
+          "id": "TL9Wl",
+          "x": 0,
+          "y": 0,
+          "name": "Spinner",
+          "enabled": false,
+          "startAngle": 90,
+          "sweepAngle": -270,
+          "width": 16,
+          "height": 16,
+          "stroke": "$primary",
+          "strokeWidth": 2
+        },
+        {
+          "type": "frame",
+          "id": "RUYCb",
+          "name": "Delete",
+          "width": 40,
+          "height": 40,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "lJrOT",
+              "name": "Trash",
+              "width": 20,
+              "height": 20,
+              "icon": "trash-2",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "whf9Y",
+      "x": 0,
+      "y": 52,
+      "name": "Saved proxies / List",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "D32fry",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "yR0sB",
+              "name": "Top Bar",
+              "width": "fill_container",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "Ilqbx",
+                  "name": "Back",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "arrow-left",
+                  "library": "lucide",
+                  "fill": "$on-background"
+                },
+                {
+                  "type": "text",
+                  "id": "D4jgzi",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "content": "Saved proxies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "llflZ",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "OLTcu",
+          "name": "Rows",
+          "width": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "id": "ZULkI",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "192.168.1.10:1080",
+              "width": "fill_container",
+              "descendants": {
+                "oZK8m": {
+                  "content": "192.168.1.10:1080"
+                }
+              }
+            },
+            {
+              "id": "C9JdjS",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "10.0.0.2:8080",
+              "width": "fill_container",
+              "descendants": {
+                "va3D9": {
+                  "stroke": "$on-surface-variant"
+                },
+                "fDzDW": {
+                  "enabled": false
+                },
+                "oZK8m": {
+                  "content": "10.0.0.2:8080"
+                }
+              }
+            },
+            {
+              "id": "yzNpK",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "proxy.lan:3128",
+              "width": "fill_container",
+              "descendants": {
+                "va3D9": {
+                  "stroke": "$on-surface-variant"
+                },
+                "fDzDW": {
+                  "enabled": false
+                },
+                "oZK8m": {
+                  "content": "proxy.lan:3128"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QxZZR",
+          "layoutPosition": "absolute",
+          "x": 313,
+          "y": 772,
+          "name": "FAB Add",
+          "width": 56,
+          "height": 56,
+          "fill": "$primary",
+          "cornerRadius": 16,
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#0000002E",
+            "offset": {
+              "x": 0,
+              "y": 2
+            },
+            "blur": 6
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "dOUBz",
+              "name": "Plus",
+              "width": 24,
+              "height": 24,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "$on-primary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "H0i41a",
+      "x": 473,
+      "y": 52,
+      "name": "Saved proxies / Empty",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "iWAGd",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "qcm7U",
+              "name": "Top Bar",
+              "width": "fill_container",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "z1u18C",
+                  "name": "Back",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "arrow-left",
+                  "library": "lucide",
+                  "fill": "$on-background"
+                },
+                {
+                  "type": "text",
+                  "id": "bsQrN",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "content": "Saved proxies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "d2xm6",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Q1Me2M",
+          "layoutPosition": "absolute",
+          "x": 313,
+          "y": 772,
+          "name": "FAB Add",
+          "width": 56,
+          "height": 56,
+          "fill": "$primary",
+          "cornerRadius": 16,
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#0000002E",
+            "offset": {
+              "x": 0,
+              "y": 2
+            },
+            "blur": 6
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "nE40Y",
+              "name": "Plus",
+              "width": 24,
+              "height": 24,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "$on-primary"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "nUhcq",
+          "name": "Empty",
+          "fill": "$on-surface-variant",
+          "content": "No saved proxies",
+          "fontFamily": "$font-body",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "NfyI1",
+      "x": 946,
+      "y": 52,
+      "name": "Saved proxies / Frozen (VPN on)",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "S0UGjD",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HfcdU",
+              "name": "Top Bar",
+              "width": "fill_container",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "oWj1k",
+                  "name": "Back",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "arrow-left",
+                  "library": "lucide",
+                  "fill": "$on-background"
+                },
+                {
+                  "type": "text",
+                  "id": "xJ4hn",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "content": "Saved proxies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "NYM8H",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ollNL",
+          "name": "Frozen Notice",
+          "width": "fill_container",
+          "fill": "$surface-block",
+          "cornerRadius": "$radius-s",
+          "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "EmzoC",
+              "name": "Info",
+              "width": 18,
+              "height": 18,
+              "icon": "info",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
+            },
+            {
+              "type": "text",
+              "id": "B0kd0r",
+              "name": "Message",
+              "fill": "$on-background",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Turn off the VPN to change saved proxies.",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "l1qQCB",
+          "name": "Rows",
+          "width": "fill_container",
+          "layout": "vertical",
+          "children": [
+            {
+              "id": "GCIAo",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "192.168.1.10:1080",
+              "width": "fill_container",
+              "descendants": {
+                "va3D9": {
+                  "stroke": "$disabled-content"
+                },
+                "fDzDW": {
+                  "fill": "$disabled-content"
+                },
+                "oZK8m": {
+                  "fill": "$disabled-content",
+                  "content": "192.168.1.10:1080"
+                },
+                "X1rN7i": {
+                  "fill": "$disabled-content"
+                },
+                "lJrOT": {
+                  "fill": "$disabled-content"
+                }
+              }
+            },
+            {
+              "id": "GSrbo",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "10.0.0.2:8080",
+              "width": "fill_container",
+              "descendants": {
+                "va3D9": {
+                  "stroke": "$disabled-content"
+                },
+                "fDzDW": {
+                  "fill": "$disabled-content",
+                  "enabled": false
+                },
+                "oZK8m": {
+                  "fill": "$disabled-content",
+                  "content": "10.0.0.2:8080"
+                },
+                "X1rN7i": {
+                  "fill": "$disabled-content"
+                },
+                "lJrOT": {
+                  "fill": "$disabled-content"
+                }
+              }
+            },
+            {
+              "id": "LOlxX",
+              "type": "ref",
+              "ref": "zSzEi",
+              "name": "proxy.lan:3128",
+              "width": "fill_container",
+              "descendants": {
+                "va3D9": {
+                  "stroke": "$disabled-content"
+                },
+                "fDzDW": {
+                  "fill": "$disabled-content",
+                  "enabled": false
+                },
+                "oZK8m": {
+                  "fill": "$disabled-content",
+                  "content": "proxy.lan:3128"
+                },
+                "X1rN7i": {
+                  "fill": "$disabled-content"
+                },
+                "lJrOT": {
+                  "fill": "$disabled-content"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "w27bM",
+          "layoutPosition": "absolute",
+          "x": 313,
+          "y": 772,
+          "name": "FAB Add",
+          "enabled": false,
+          "width": 56,
+          "height": 56,
+          "fill": "$primary",
+          "cornerRadius": 16,
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#0000002E",
+            "offset": {
+              "x": 0,
+              "y": 2
+            },
+            "blur": 6
+          },
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "x6SjHo",
+              "name": "Plus",
+              "width": 24,
+              "height": 24,
+              "icon": "plus",
+              "library": "lucide",
+              "fill": "$on-primary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "cnQUd",
+      "x": 0,
+      "y": 1024,
+      "name": "Proxy editor",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "mcHxd",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HiEf0",
+              "name": "Top Bar",
+              "width": "fill_container",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "OarSj",
+                  "name": "Back",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "arrow-left",
+                  "library": "lucide",
+                  "fill": "$on-background"
+                },
+                {
+                  "type": "text",
+                  "id": "W1Jtdi",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "content": "Proxy editor",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "BCbDZ",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "id": "O2u0F",
+          "type": "ref",
+          "ref": "o76ix",
+          "name": "Proxy Host",
+          "width": "fill_container",
+          "cornerRadius": "$radius-s",
+          "descendants": {
+            "MWrGa": {
+              "content": "192.168.1.10"
+            },
+            "J0Us6r": {
+              "content": "Proxy host"
+            }
+          }
+        },
+        {
+          "id": "hjhr2",
+          "type": "ref",
+          "ref": "o76ix",
+          "name": "Proxy Port",
+          "width": "fill_container",
+          "cornerRadius": "$radius-s",
+          "descendants": {
+            "MWrGa": {
+              "content": "1080"
+            },
+            "J0Us6r": {
+              "content": "Proxy port"
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "snDeY",
+          "name": "Protocol",
+          "width": "fill_container",
+          "padding": [
+            0,
+            4
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "X9sSM1",
+              "name": "Label",
+              "fill": "$on-surface-variant",
+              "content": "Protocol",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "JM7og",
+              "name": "Value",
+              "fill": "$on-background",
+              "content": "HTTP",
+              "fontFamily": "$font-mono",
+              "fontSize": 14,
+              "fontWeight": "normal",
+              "letterSpacing": 1.6
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "rQ1Sh",
+          "name": "Actions",
+          "width": "fill_container",
+          "gap": "$space-inline",
+          "children": [
+            {
+              "id": "ceyUN",
+              "type": "ref",
+              "ref": "e7oPSA",
+              "name": "Check proxy",
+              "width": "fill_container",
+              "cornerRadius": "$radius-s",
+              "fill": "#00000000",
+              "stroke": "$outline",
+              "strokeWidth": 1,
+              "descendants": {
+                "gOM1Z": {
+                  "content": "Check proxy",
+                  "fill": "$primary"
+                }
+              }
+            },
+            {
+              "id": "qltES",
+              "type": "ref",
+              "ref": "e7oPSA",
+              "name": "Save proxy",
+              "width": "fill_container",
+              "cornerRadius": "$radius-s",
+              "fill": "$disabled-container",
+              "descendants": {
+                "gOM1Z": {
+                  "content": "Save proxy",
+                  "fill": "$disabled-content"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "EY8Vo",
+      "x": 473,
+      "y": 1024,
+      "name": "Proxy editor / Frozen (VPN on)",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$background",
+      "layout": "vertical",
+      "gap": "$space-block",
+      "padding": [
+        56,
+        "$space-screen",
+        "$space-screen",
+        "$space-screen"
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "r7Jih",
+          "name": "Header",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "pMByL",
+              "name": "Top Bar",
+              "width": "fill_container",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "w1xtew",
+                  "name": "Back",
+                  "width": 24,
+                  "height": 24,
+                  "icon": "arrow-left",
+                  "library": "lucide",
+                  "fill": "$on-background"
+                },
+                {
+                  "type": "text",
+                  "id": "bfH2A",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "content": "Proxy editor",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "wJ7Bi",
+              "name": "Rule",
+              "fill": "$hairline",
+              "width": "fill_container",
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "wPoof",
+          "name": "Frozen Notice",
+          "width": "fill_container",
+          "fill": "$surface-block",
+          "cornerRadius": "$radius-s",
+          "gap": 12,
+          "padding": [
+            12,
+            16
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "P3mGZr",
+              "name": "Info",
+              "width": 18,
+              "height": 18,
+              "icon": "info",
+              "library": "lucide",
+              "fill": "$on-surface-variant"
+            },
+            {
+              "type": "text",
+              "id": "KomnR",
+              "name": "Message",
+              "fill": "$on-background",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Turn off the VPN to edit proxies.",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "id": "bwnOt",
+          "type": "ref",
+          "ref": "o76ix",
+          "stroke": "$disabled-container",
+          "name": "Proxy Host",
+          "width": "fill_container",
+          "cornerRadius": "$radius-s",
+          "descendants": {
+            "MWrGa": {
+              "fill": "$disabled-content",
+              "content": "192.168.1.10"
+            },
+            "J0Us6r": {
+              "fill": "$disabled-content",
+              "content": "Proxy host"
+            }
+          }
+        },
+        {
+          "id": "kAr9R",
+          "type": "ref",
+          "ref": "o76ix",
+          "stroke": "$disabled-container",
+          "name": "Proxy Port",
+          "width": "fill_container",
+          "cornerRadius": "$radius-s",
+          "descendants": {
+            "MWrGa": {
+              "fill": "$disabled-content",
+              "content": "1080"
+            },
+            "J0Us6r": {
+              "fill": "$disabled-content",
+              "content": "Proxy port"
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "TfPrm",
+          "name": "Protocol",
+          "width": "fill_container",
+          "padding": [
+            0,
+            4
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "qTgdA",
+              "name": "Label",
+              "fill": "$disabled-content",
+              "content": "Protocol",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "rwZQh",
+              "name": "Value",
+              "fill": "$disabled-content",
+              "content": "HTTP",
+              "fontFamily": "$font-mono",
+              "fontSize": 14,
+              "fontWeight": "normal",
+              "letterSpacing": 1.6
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "O9w8z",
+          "name": "Actions",
+          "width": "fill_container",
+          "gap": "$space-inline",
+          "children": [
+            {
+              "id": "qvK79",
+              "type": "ref",
+              "ref": "e7oPSA",
+              "stroke": "$disabled-container",
+              "name": "Check proxy",
+              "width": "fill_container",
+              "cornerRadius": "$radius-s",
+              "fill": "#00000000",
+              "strokeWidth": 1,
+              "descendants": {
+                "gOM1Z": {
+                  "fill": "$disabled-content",
+                  "content": "Check proxy"
+                }
+              }
+            },
+            {
+              "id": "oQA0t",
+              "type": "ref",
+              "ref": "e7oPSA",
+              "name": "Save proxy",
+              "width": "fill_container",
+              "cornerRadius": "$radius-s",
+              "fill": "$disabled-container",
+              "descendants": {
+                "gOM1Z": {
+                  "content": "Save proxy",
+                  "fill": "$disabled-content"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "OPTX0",
+      "x": 1012,
+      "y": -1080,
+      "name": "QS Tile",
+      "reusable": true,
+      "width": 180,
+      "height": 72,
+      "fill": "$surface-variant",
+      "cornerRadius": 20,
+      "gap": 12,
+      "padding": [
+        0,
+        16
+      ],
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "path",
+          "id": "d8u3Xn",
+          "name": "ic_kill_switch_tile",
+          "geometry": "M12.65 10c-0.82-2.33-3.04-4-5.65-4-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4h4.35v4h4v-4h2v-4h-10.35z m-5.65 4c-1.1 0-2-0.9-2-2s0.9-2 2-2 2 0.9 2 2-0.9 2-2 2z",
+          "viewBox": [
+            0,
+            0,
+            24,
+            24
+          ],
+          "fill": "$on-background",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "type": "frame",
+          "id": "AMkZJ",
+          "name": "Text",
+          "layout": "vertical",
+          "gap": 2,
+          "children": [
+            {
+              "type": "text",
+              "id": "qWION",
+              "name": "Label",
+              "fill": "$on-background",
+              "content": "Proxy VPN",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "gd6fN",
+              "name": "State",
+              "fill": "$on-surface-variant",
+              "content": "Off",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "w1Icx",
+      "x": 552,
+      "y": 1996,
+      "name": "Quick Settings tile — Proxy VPN",
+      "width": 472,
+      "fill": "$background",
+      "cornerRadius": 8,
+      "stroke": "$outline",
+      "strokeWidth": 1,
+      "layout": "vertical",
+      "gap": 20,
+      "padding": 24,
+      "children": [
+        {
+          "type": "text",
+          "id": "f3RaZ",
+          "name": "Board Title",
+          "fill": "$on-background",
+          "content": "Quick Settings tile — Proxy VPN",
+          "fontFamily": "$font-body",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "R8neO4",
+          "name": "Board Note",
+          "fill": "$on-surface-variant",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "content": "System surface: colours and the state subtitle come from Android. Icon is ic_kill_switch_tile, label from kill_switch_tile_label.",
+          "fontFamily": "$font-body",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "UFkMT",
+          "name": "Active",
+          "width": "fill_container",
+          "gap": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "Wwrgi",
+              "type": "ref",
+              "ref": "OPTX0",
+              "name": "Tile Active",
+              "fill": "$primary",
+              "descendants": {
+                "d8u3Xn": {
+                  "fill": "$on-primary"
+                },
+                "qWION": {
+                  "fill": "$on-primary"
+                },
+                "gd6fN": {
+                  "content": "On",
+                  "fill": "$on-primary-muted"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "y8zta",
+              "name": "Description",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AYGEN",
+                  "name": "State Name",
+                  "fill": "$on-background",
+                  "content": "Active",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "aCmh6",
+                  "name": "When",
+                  "fill": "$on-surface-variant",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "VPN is up. Tap stops ProxyVpnService.",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "BVwLP",
+          "name": "Inactive",
+          "width": "fill_container",
+          "gap": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "dDHTC",
+              "type": "ref",
+              "ref": "OPTX0",
+              "name": "Tile Inactive"
+            },
+            {
+              "type": "frame",
+              "id": "Ijy10",
+              "name": "Description",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "A26Mh9",
+                  "name": "State Name",
+                  "fill": "$on-background",
+                  "content": "Inactive",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "RBPYp",
+                  "name": "When",
+                  "fill": "$on-surface-variant",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "VPN is off, saved endpoint is valid. First tap may show the system VPN consent.",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "NPMMB",
+          "name": "Unavailable",
+          "width": "fill_container",
+          "gap": 16,
+          "alignItems": "center",
+          "children": [
+            {
+              "id": "z1GZT",
+              "type": "ref",
+              "ref": "OPTX0",
+              "name": "Tile Unavailable",
+              "opacity": 0.38,
+              "descendants": {
+                "gd6fN": {
+                  "content": "Unavailable"
+                }
+              }
+            },
+            {
+              "type": "frame",
+              "id": "leF3j",
+              "name": "Description",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "KkxZI",
+                  "name": "State Name",
+                  "fill": "$on-background",
+                  "content": "Unavailable",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "rsvAf",
+                  "name": "When",
+                  "fill": "$on-surface-variant",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "No valid saved endpoint. Tap does nothing.",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "oC9eG",
+      "x": 0,
+      "y": 2515,
+      "name": "README Hero — Side by Side",
+      "fill": "#F4F6F8",
+      "cornerRadius": 16,
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {
+          "type": "frame",
+          "id": "zEIdL",
+          "name": "Direct connection",
+          "clip": true,
+          "width": 393,
+          "height": 852,
+          "fill": "$background",
+          "layout": "vertical",
+          "gap": "$space-block",
+          "padding": [
+            56,
+            "$space-screen",
+            "$space-screen",
+            "$space-screen"
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "YdJ86",
+              "name": "Header",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "LejDr",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Proxy kill switch",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "RdJbC",
+                  "name": "Rule",
+                  "fill": "$hairline",
+                  "width": "fill_container",
+                  "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uNkb9",
+              "name": "State Block",
+              "width": "fill_container",
+              "fill": "$surface-block",
+              "cornerRadius": "$radius-s",
+              "layout": "vertical",
+              "gap": 14,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ANsCH",
+                  "name": "State Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Q5YkBQ",
+                      "name": "State",
+                      "fill": "$on-surface-variant",
+                      "content": "Direct connection",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "id": "r0wWju",
+                      "type": "ref",
+                      "ref": "NvMAG",
+                      "name": "Switch Off"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rgY9E",
+                  "name": "Active Proxy",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "BZF4y",
+                      "name": "Caption",
+                      "fill": "$on-surface-variant",
+                      "content": "Active proxy",
+                      "fontFamily": "$font-body",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "type": "text",
+                      "id": "I6EVD",
+                      "name": "Endpoint Readout",
+                      "fill": "$on-background",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "192.168.1.10:1080",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 26,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "djBHi",
+                      "name": "Protocol Tag",
+                      "fill": "$on-surface-variant",
+                      "content": "HTTP",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QHPlx",
+              "name": "Manage proxies",
+              "width": "fill_container",
+              "height": 56,
+              "stroke": "$hairline",
+              "strokeWidth": {
+                "bottom": 1
+              },
+              "padding": [
+                0,
+                4,
+                0,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "AgXOh",
+                  "name": "Label",
+                  "fill": "$on-background",
+                  "content": "Manage proxies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon",
+                  "id": "GNnRt",
+                  "name": "Chevron",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-right",
+                  "library": "lucide",
+                  "fill": "$on-surface-variant"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Pzq8R",
+          "name": "Proxy enabled",
+          "clip": true,
+          "width": 393,
+          "height": 852,
+          "fill": "$background",
+          "layout": "vertical",
+          "gap": "$space-block",
+          "padding": [
+            56,
+            "$space-screen",
+            "$space-screen",
+            "$space-screen"
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "P6ouk2",
+              "name": "Header",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "TJq9r",
+                  "name": "Title",
+                  "fill": "$on-background",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Proxy kill switch",
+                  "fontFamily": "$font-body",
+                  "fontSize": 22,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "w3ULtr",
+                  "name": "Rule",
+                  "fill": "$hairline",
+                  "width": "fill_container",
+                  "height": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YUEYH",
+              "name": "State Block",
+              "width": "fill_container",
+              "fill": "$primary",
+              "cornerRadius": "$radius-s",
+              "layout": "vertical",
+              "gap": 14,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Ci6b1",
+                  "name": "State Row",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UQLDR",
+                      "name": "State",
+                      "fill": "$on-primary",
+                      "content": "Proxy enabled",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "id": "dbZda",
+                      "type": "ref",
+                      "ref": "NvMAG",
+                      "fill": "$on-primary",
+                      "strokeWidth": 0,
+                      "padding": [
+                        0,
+                        4
+                      ],
+                      "justifyContent": "end",
+                      "name": "Switch Off",
+                      "descendants": {
+                        "Buf9R": {
+                          "width": 24,
+                          "height": 24,
+                          "fill": "$primary"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "OvC9e",
+                  "name": "Active Proxy",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "q8Ok40",
+                      "name": "Caption",
+                      "fill": "$on-primary-muted",
+                      "content": "Active proxy",
+                      "fontFamily": "$font-body",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.2
+                    },
+                    {
+                      "type": "text",
+                      "id": "pQIWK",
+                      "name": "Endpoint Readout",
+                      "fill": "$on-primary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "192.168.1.10:1080",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 26,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Zv4Vs",
+                      "name": "Protocol Tag",
+                      "fill": "$on-primary-muted",
+                      "content": "HTTP",
+                      "fontFamily": "$font-mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "letterSpacing": 1.6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "v23B8",
+              "name": "Manage proxies",
+              "width": "fill_container",
+              "height": 56,
+              "stroke": "$hairline",
+              "strokeWidth": {
+                "bottom": 1
+              },
+              "padding": [
+                0,
+                4,
+                0,
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "s1MUQM",
+                  "name": "Label",
+                  "fill": "$on-background",
+                  "content": "Manage proxies",
+                  "fontFamily": "$font-body",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon",
+                  "id": "BOr4J",
+                  "name": "Chevron",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-right",
+                  "library": "lucide",
+                  "fill": "$on-surface-variant"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "themes": {
-    "Mode": [
-      "Light",
-      "Dark"
-    ],
     "mode": [
       "light",
       "dark"
     ]
   },
   "variables": {
-    "--sidebar": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#E7E8E5"
-        },
-        {
-          "value": "#18181b",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#666666"
-        },
-        {
-          "value": "#fafafa",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-primary": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#18181b"
-        },
-        {
-          "value": "#18181b",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-primary-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#fafafa"
-        },
-        {
-          "value": "#fafafa",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-border": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#CBCCC9"
-        },
-        {
-          "value": "#ffffff1a",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-accent": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#CBCCC9"
-        },
-        {
-          "value": "#2a2a30",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-accent-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#18181b"
-        },
-        {
-          "value": "#fafafa",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--sidebar-ring": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#71717a"
-        },
-        {
-          "value": "#71717a",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--background": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#F2F3F0"
-        },
-        {
-          "value": "#111111",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#FFFFFF",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--card": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#FFFFFF"
-        },
-        {
-          "value": "#1A1A1A",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--card-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#FFFFFF",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--popover": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#FFFFFF"
-        },
-        {
-          "value": "#1A1A1A",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--popover-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#FFFFFF",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--primary": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#FF8400"
-        },
-        {
-          "value": "#FF8400",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--primary-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#111111",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--secondary": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#E7E8E5"
-        },
-        {
-          "value": "#2E2E2E",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--secondary-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#FFFFFF",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--muted": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#F2F3F0"
-        },
-        {
-          "value": "#2E2E2E",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--muted-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#666666"
-        },
-        {
-          "value": "#B8B9B6",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--accent": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#F2F3F0"
-        },
-        {
-          "value": "#111111",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--accent-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#111111"
-        },
-        {
-          "value": "#F2F3F0",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--destructive": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#D93C15"
-        },
-        {
-          "value": "#FF5C33",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--border": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#CBCCC9"
-        },
-        {
-          "value": "#2E2E2E",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--input": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#CBCCC9"
-        },
-        {
-          "value": "#2E2E2E",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--ring": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#666666"
-        },
-        {
-          "value": "#666666",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--white": {
-      "type": "color",
-      "value": "#FFFFFF"
-    },
-    "--black": {
-      "type": "color",
-      "value": "#000000"
-    },
-    "--font-primary": {
-      "type": "string",
-      "value": "JetBrains Mono"
-    },
-    "--font-secondary": {
-      "type": "string",
-      "value": "Geist"
-    },
-    "--radius-none": {
-      "type": "number",
-      "value": 0
-    },
-    "--radius-pill": {
-      "type": "number",
-      "value": 999
-    },
-    "--color-success": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#DFE6E1"
-        },
-        {
-          "value": "#222924",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-success-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#004D1A"
-        },
-        {
-          "value": "#B6FFCE",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-warning": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#E9E3D8"
-        },
-        {
-          "value": "#291C0F",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-warning-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#804200"
-        },
-        {
-          "value": "#FF8400",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-error": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#E5DCDA"
-        },
-        {
-          "value": "#24100B",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-error-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#8C1C00"
-        },
-        {
-          "value": "#FF5C33",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-info": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#DFDFE6"
-        },
-        {
-          "value": "#222229",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--color-info-foreground": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#000066"
-        },
-        {
-          "value": "#B2B2FF",
-          "theme": {
-            "Mode": "Dark"
-          }
-        }
-      ]
-    },
-    "--radius-m": {
-      "type": "number",
-      "value": 16
-    },
     "primary": {
       "type": "color",
       "value": [
@@ -2515,23 +3103,6 @@
         },
         {
           "value": "#45464F",
-          "theme": {
-            "mode": "dark"
-          }
-        }
-      ]
-    },
-    "secondary-container": {
-      "type": "color",
-      "value": [
-        {
-          "value": "#E0E3FF",
-          "theme": {
-            "mode": "light"
-          }
-        },
-        {
-          "value": "#2C3159",
           "theme": {
             "mode": "dark"
           }
