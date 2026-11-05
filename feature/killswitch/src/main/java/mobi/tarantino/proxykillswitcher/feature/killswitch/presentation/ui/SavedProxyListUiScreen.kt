@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -118,10 +122,15 @@ private fun SavedProxyListContent(
 private fun SavedProxyAddFab(onAdd: () -> Unit) {
     FloatingActionButton(
         onClick = onAdd,
+        shape = RoundedCornerShape(AppDimens.RadiusM),
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
     ) {
-        Text("+", style = MaterialTheme.typography.titleLarge)
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add proxy",
+            modifier = Modifier.size(AppDimens.IconSize),
+        )
     }
 }
 
@@ -164,7 +173,7 @@ private fun SavedProxyItemsList(
             )
             HorizontalDivider(
                 thickness = AppDimens.Hairline,
-                color = MaterialTheme.colorScheme.outlineVariant,
+                color = Hairline,
             )
         }
     }
@@ -184,13 +193,14 @@ private fun SavedProxyEndpointRow(
                 .clickable(enabled = !isFrozen) {
                     onIntent(SavedProxyListIntent.EditClick(endpoint.savedEndpoint))
                 },
-        horizontalArrangement = Arrangement.spacedBy(AppDimens.SpaceInline),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(
             selected = endpoint.isActive,
             enabled = !isFrozen && !endpoint.isSelecting,
             onClick = { onIntent(SavedProxyListIntent.SelectClick(endpoint.savedEndpoint)) },
+            modifier = Modifier.size(20.dp),
         )
         SavedProxyEndpointAddress(
             addressText = endpoint.addressText,
@@ -202,20 +212,21 @@ private fun SavedProxyEndpointRow(
                 strokeWidth = 2.dp,
             )
         }
-        Text(
-            text = "✕",
-            style = MaterialTheme.typography.bodyLarge,
-            color =
+        Icon(
+            imageVector = Icons.Filled.DeleteOutline,
+            contentDescription = "Delete proxy",
+            tint =
                 if (isFrozen) {
                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
                 } else {
-                    MaterialTheme.colorScheme.error
+                    MaterialTheme.colorScheme.onSurfaceVariant
                 },
             modifier =
                 Modifier
+                    .size(40.dp)
                     .clickable(enabled = !isFrozen) {
                         onIntent(SavedProxyListIntent.DeleteClick(endpoint.savedEndpoint))
-                    }.padding(8.dp),
+                    }.padding(10.dp),
         )
     }
 }
@@ -235,10 +246,9 @@ private fun SavedProxyEndpointAddress(
             }
         }
 
-    Row(
+    Column(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         Text(
             text = address,
@@ -249,7 +259,7 @@ private fun SavedProxyEndpointAddress(
             Text(
                 text = protocol,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -265,14 +275,14 @@ private fun SavedProxyListHeader(onBack: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(AppDimens.SpaceInline),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = "‹",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground,
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier =
                     Modifier
-                        .clickable(onClick = onBack)
-                        .padding(horizontal = 8.dp),
+                        .size(24.dp)
+                        .clickable(onClick = onBack),
             )
             Text(
                 text = "Saved proxies",

@@ -12,15 +12,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import mobi.tarantino.proxykillswitcher.core.designsystem.theme.AppDimens
 import mobi.tarantino.proxykillswitcher.core.designsystem.theme.AppTheme
 import mobi.tarantino.proxykillswitcher.core.designsystem.theme.Hairline
@@ -135,25 +140,35 @@ private fun SavedProxyEditorFields(
         OutlinedTextField(
             value = uiState.hostText,
             onValueChange = { host -> onIntent(SavedProxyEditorIntent.HostChanged(host)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(AppDimens.FieldHeight),
             enabled = !uiState.isFrozen,
-            label = { Text("Proxy host") },
+            label = { Text("Proxy host", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)) },
             shape = RoundedCornerShape(AppDimens.RadiusS),
+            colors = savedProxyFieldColors(),
             singleLine = true,
         )
 
         OutlinedTextField(
             value = uiState.portText,
             onValueChange = { portText -> onIntent(SavedProxyEditorIntent.PortChanged(portText)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(AppDimens.FieldHeight),
             enabled = !uiState.isFrozen,
-            label = { Text("Proxy port") },
+            label = { Text("Proxy port", style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp)) },
             shape = RoundedCornerShape(AppDimens.RadiusS),
+            colors = savedProxyFieldColors(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
         )
     }
 }
+
+@Composable
+private fun savedProxyFieldColors() =
+    OutlinedTextFieldDefaults.colors(
+        disabledBorderColor = MaterialTheme.colorScheme.outlineVariant,
+        disabledTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f),
+        disabledLabelColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f),
+    )
 
 @Composable
 private fun SavedProxyEditorProtocolRow(protocolText: String) {
@@ -164,12 +179,12 @@ private fun SavedProxyEditorProtocolRow(protocolText: String) {
     ) {
         Text(
             text = "Protocol",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = protocolText.uppercase(),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )
     }
@@ -189,6 +204,11 @@ private fun SavedProxyEditorActionButtons(
             enabled = uiState.isCheckEnabled,
             modifier = Modifier.weight(1f).height(AppDimens.ButtonHeight),
             shape = RoundedCornerShape(AppDimens.RadiusS),
+            colors =
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f),
+                ),
         ) {
             if (uiState.isChecking) {
                 CircularProgressIndicator(
@@ -245,14 +265,14 @@ private fun SavedProxyEditorHeader(onBack: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(AppDimens.SpaceInline),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = "‹",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground,
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier =
                     Modifier
-                        .clickable(onClick = onBack)
-                        .padding(horizontal = 8.dp),
+                        .size(24.dp)
+                        .clickable(onClick = onBack),
             )
             Text(
                 text = "Proxy editor",

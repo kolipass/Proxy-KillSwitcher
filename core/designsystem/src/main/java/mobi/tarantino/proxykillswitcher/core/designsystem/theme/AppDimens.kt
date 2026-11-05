@@ -11,6 +11,8 @@ object AppDimens {
     val RadiusM = 16.dp
     val Hairline = 1.dp
     val RowHeight = 64.dp
-    val ButtonHeight = 48.dp
+    val ButtonHeight = 43.dp
+    val FieldHeight = 56.dp
+    val IconSize = 20.dp
     val ProgressSize = 16.dp
 }

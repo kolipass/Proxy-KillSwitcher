@@ -11,15 +11,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -168,6 +172,7 @@ private fun KillSwitchStateBlock(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(AppDimens.RadiusS),
         colors = CardDefaults.cardColors(containerColor = containerColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(AppDimens.SpaceBlock),
@@ -197,7 +202,7 @@ private fun KillSwitchStateHeader(
     ) {
         Text(
             text = uiState.connectionStatusText,
-            style = MaterialTheme.typography.bodyMedium.copy(letterSpacing = 1.2.sp),
+            style = MaterialTheme.typography.bodyMedium,
             color =
                 if (uiState.isEnabled) {
                     MaterialTheme.colorScheme.onPrimary
@@ -221,6 +226,7 @@ private fun KillSwitchStateHeader(
                 checked = uiState.isEnabled,
                 enabled = uiState.isToggleEnabled,
                 onCheckedChange = { onIntent(KillSwitchIntent.ToggleClick) },
+                modifier = Modifier.height(32.dp),
                 colors =
                     if (uiState.isEnabled) {
                         SwitchDefaults.colors(
@@ -251,7 +257,17 @@ private fun KillSwitchEndpointReadout(
             }
         }
 
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            text = "Active proxy",
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+            color =
+                if (isEnabled) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+        )
         Text(
             text = displayAddress,
             style =
@@ -275,7 +291,7 @@ private fun KillSwitchEndpointReadout(
                     if (isEnabled) {
                         OnPrimaryMuted
                     } else {
-                        MaterialTheme.colorScheme.onBackground
+                        MaterialTheme.colorScheme.onSurfaceVariant
                     },
             )
         }
@@ -284,20 +300,19 @@ private fun KillSwitchEndpointReadout(
 
 @Composable
 private fun ManageProxiesButton(onClick: () -> Unit) {
-    Surface(
+    Column(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(AppDimens.RadiusS))
                 .clickable(onClick = onClick),
-        shape = RoundedCornerShape(AppDimens.RadiusS),
-        color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 18.dp),
+                    .height(AppDimens.RowHeight)
+                    .padding(start = AppDimens.SpaceItem),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -306,12 +321,17 @@ private fun ManageProxiesButton(onClick: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground,
             )
-            Text(
-                text = "›",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(AppDimens.IconSize),
             )
         }
+        HorizontalDivider(
+            thickness = AppDimens.Hairline,
+            color = MaterialTheme.colorScheme.outlineVariant,
+        )
     }
 }
 
