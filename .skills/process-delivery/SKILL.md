@@ -52,9 +52,9 @@ algorithm:
             -   id: 2
                 action: Compose structured PR description
                 sections:
-                    - "### Что изменилось" (bullet points of incoming changes)
-                    - "### Зачем" (motivation or linked issue/PRD)
-                    - "### Проверка" (verification commands and status)
+                    - "### Что изменилось (bullet points of incoming changes)"
+                    - "### Зачем (motivation or linked issue/PRD)"
+                    - "### Проверка (verification commands and status)"
             -   id: 3
                 action: Create Pull Request
                 execution: >

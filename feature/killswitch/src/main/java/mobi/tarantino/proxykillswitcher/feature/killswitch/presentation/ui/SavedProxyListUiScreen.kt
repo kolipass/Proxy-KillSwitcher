@@ -7,23 +7,39 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import mobi.tarantino.proxykillswitcher.core.designsystem.theme.AppDimens
 import mobi.tarantino.proxykillswitcher.core.designsystem.theme.AppTheme
+import mobi.tarantino.proxykillswitcher.core.designsystem.theme.Hairline
 import mobi.tarantino.proxykillswitcher.core.di.viewmodel.viewModel
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.ProxyProtocol
 import mobi.tarantino.proxykillswitcher.feature.killswitch.domain.SavedProxyEndpoint
@@ -67,47 +83,98 @@ private fun SavedProxyListContent(
     Scaffold(
         floatingActionButton = {
             if (!uiState.isFrozen) {
-                FloatingActionButton(
-                    onClick = { onIntent(SavedProxyListIntent.AddClick) },
-                ) {
-                    Text("+")
-                }
+                SavedProxyAddFab(onAdd = { onIntent(SavedProxyListIntent.AddClick) })
             }
         },
     ) { contentPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(contentPadding).padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = AppDimens.SpaceScreen, vertical = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(AppDimens.SpaceBlock),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Button(onClick = onBack) {
-                    Text("Back")
-                }
-                Text("Saved proxies")
-            }
+            SavedProxyListHeader(onBack = onBack)
+
             if (uiState.isFrozen) {
-                Text("Turn off the VPN to change saved proxies.")
+                SavedProxyFrozenBanner()
             }
+
             if (uiState.endpoints.isEmpty()) {
-                Text("No saved proxies")
+                Text(
+                    text = "No saved proxies",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             } else {
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    items(
-                        items = uiState.endpoints,
-                        key = { endpoint -> endpoint.addressText },
-                    ) { endpoint ->
-                        SavedProxyEndpointRow(
-                            endpoint = endpoint,
-                            isFrozen = uiState.isFrozen,
-                            onIntent = onIntent,
-                        )
-                    }
-                }
+                SavedProxyItemsList(
+                    endpoints = uiState.endpoints,
+                    isFrozen = uiState.isFrozen,
+                    onIntent = onIntent,
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun SavedProxyAddFab(onAdd: () -> Unit) {
+    FloatingActionButton(
+        onClick = onAdd,
+        shape = RoundedCornerShape(AppDimens.RadiusM),
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add proxy",
+            modifier = Modifier.size(AppDimens.IconSize),
+        )
+    }
+}
+
+@Composable
+private fun SavedProxyFrozenBanner() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(AppDimens.RadiusS),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+    ) {
+        Text(
+            text = "Turn off the VPN to change saved proxies.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(AppDimens.SpaceInline),
+        )
+    }
+}
+
+@Composable
+private fun SavedProxyItemsList(
+    endpoints: List<SavedProxyListUiState.Endpoint>,
+    isFrozen: Boolean,
+    onIntent: (SavedProxyListIntent) -> Unit,
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(0.dp),
+    ) {
+        items(
+            items = endpoints,
+            key = { endpoint -> endpoint.addressText },
+        ) { endpoint ->
+            SavedProxyEndpointRow(
+                endpoint = endpoint,
+                isFrozen = isFrozen,
+                onIntent = onIntent,
+            )
+            HorizontalDivider(
+                thickness = AppDimens.Hairline,
+                color = Hairline,
+            )
         }
     }
 }
@@ -122,29 +189,111 @@ private fun SavedProxyEndpointRow(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .clickable(enabled = !isFrozen) { onIntent(SavedProxyListIntent.EditClick(endpoint.savedEndpoint)) }
-                .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .height(AppDimens.RowHeight)
+                .clickable(enabled = !isFrozen) {
+                    onIntent(SavedProxyListIntent.EditClick(endpoint.savedEndpoint))
+                },
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(
             selected = endpoint.isActive,
             enabled = !isFrozen && !endpoint.isSelecting,
             onClick = { onIntent(SavedProxyListIntent.SelectClick(endpoint.savedEndpoint)) },
+            modifier = Modifier.size(20.dp),
         )
-        Text(
-            text = endpoint.addressText,
+        SavedProxyEndpointAddress(
+            addressText = endpoint.addressText,
             modifier = Modifier.weight(1f),
         )
         if (endpoint.isSelecting) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(
+                modifier = Modifier.size(AppDimens.ProgressSize),
+                strokeWidth = 2.dp,
+            )
         }
-        Button(
-            enabled = !isFrozen,
-            onClick = { onIntent(SavedProxyListIntent.DeleteClick(endpoint.savedEndpoint)) },
+        Icon(
+            imageVector = Icons.Filled.DeleteOutline,
+            contentDescription = "Delete proxy",
+            tint =
+                if (isFrozen) {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+            modifier =
+                Modifier
+                    .size(40.dp)
+                    .clickable(enabled = !isFrozen) {
+                        onIntent(SavedProxyListIntent.DeleteClick(endpoint.savedEndpoint))
+                    }.padding(10.dp),
+        )
+    }
+}
+
+@Composable
+private fun SavedProxyEndpointAddress(
+    addressText: String,
+    modifier: Modifier = Modifier,
+) {
+    val (address, protocol) =
+        remember(addressText) {
+            if (addressText.contains("://")) {
+                val parts = addressText.split("://", limit = 2)
+                parts.getOrElse(1) { "" } to parts[0].uppercase()
+            } else {
+                addressText to null
+            }
+        }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Text(
+            text = address,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        if (protocol != null) {
+            Text(
+                text = protocol,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SavedProxyListHeader(onBack: () -> Unit) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(AppDimens.SpaceInline),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(AppDimens.SpaceInline),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text("Delete")
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .clickable(onClick = onBack),
+            )
+            Text(
+                text = "Saved proxies",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
         }
+        HorizontalDivider(
+            thickness = AppDimens.Hairline,
+            color = Hairline,
+        )
     }
 }
 
@@ -161,20 +310,30 @@ private fun SavedProxyListContentPreview() {
 }
 
 private object SavedProxyListContentPreviewData {
-    private val savedEndpoint =
-        SavedProxyEndpoint(
-            host = "192.168.1.10",
-            port = 1080,
-            protocol = ProxyProtocol.Http,
-        )
     val uiState =
         SavedProxyListUiState(
             endpoints =
                 listOf(
                     SavedProxyListUiState.Endpoint(
-                        savedEndpoint = savedEndpoint,
+                        savedEndpoint =
+                            SavedProxyEndpoint(
+                                host = "192.168.1.10",
+                                port = 1080,
+                                protocol = ProxyProtocol.Http,
+                            ),
                         addressText = "http://192.168.1.10:1080",
                         isActive = true,
+                        isSelecting = false,
+                    ),
+                    SavedProxyListUiState.Endpoint(
+                        savedEndpoint =
+                            SavedProxyEndpoint(
+                                host = "10.0.0.1",
+                                port = 8080,
+                                protocol = ProxyProtocol.Http,
+                            ),
+                        addressText = "http://10.0.0.1:8080",
+                        isActive = false,
                         isSelecting = false,
                     ),
                 ),

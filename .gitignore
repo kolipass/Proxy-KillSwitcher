@@ -14,3 +14,7 @@ __pycache__/
 .kotlin/
 build-logic/bin/
 bin/
+.gradle-home/
+.venv/
+docs/screenshots_comparison/
+.worktrees/

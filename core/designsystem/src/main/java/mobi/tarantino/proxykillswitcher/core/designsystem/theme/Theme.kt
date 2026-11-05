@@ -13,6 +13,12 @@ private val LightColors =
         background = Background,
         onBackground = OnBackground,
         error = Error,
+        outline = Outline,
+        outlineVariant = Hairline,
+        surfaceVariant = SurfaceVariant,
+        onSurfaceVariant = OnSurfaceVariant,
+        secondaryContainer = SecondaryContainer,
+        surfaceContainer = SurfaceBlock,
     )
 
 private val DarkColors =
@@ -22,6 +28,12 @@ private val DarkColors =
         background = BackgroundDark,
         onBackground = OnBackgroundDark,
         error = ErrorDark,
+        outline = OutlineDark,
+        outlineVariant = HairlineDark,
+        surfaceVariant = SurfaceVariantDark,
+        onSurfaceVariant = OnSurfaceVariantDark,
+        secondaryContainer = SecondaryContainerDark,
+        surfaceContainer = SurfaceBlockDark,
     )
 
 @Composable

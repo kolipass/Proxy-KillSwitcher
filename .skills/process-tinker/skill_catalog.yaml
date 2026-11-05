@@ -23,7 +23,7 @@ meta:
       lambda: "LA01-LA01"
       selfDocumenting: "SD01-SD06"
     presentation:
-      compose: "CP01-CP13"
+      compose: "CP01-CP14"
       viewmodel: "VM01-VM14"
     tester:
       assertions: "A01-A07"
