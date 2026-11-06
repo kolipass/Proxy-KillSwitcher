@@ -11,6 +11,9 @@ build/
 local.properties
 *.hprof
 __pycache__/
+*.jks
+*.keystore
+!config/signing/debug.keystore
 .kotlin/
 build-logic/bin/
 bin/

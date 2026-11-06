@@ -108,6 +108,20 @@ proxykillswitcher/
 ./gradlew assembleDebug
 ```
 
+#### Signing
+
+Debug builds are signed with the shared keystore committed at `config/signing/debug.keystore`. Studio, CI and local agents therefore produce the same signature, and `adb install -r` updates the app in place instead of reinstalling it. Debug builds carry the `.debug` applicationId suffix, so they can live next to a release build.
+
+The release keystore is never committed. Release builds read it from the environment and fail loudly when it is missing:
+
+| Variable | Purpose |
+|---|---|
+| `RELEASE_KEYSTORE_PATH` | path to the `.jks` file |
+| `RELEASE_KEYSTORE_BASE64` | base64-encoded `.jks`, alternative to the path |
+| `RELEASE_KEYSTORE_PASSWORD` | keystore password |
+| `RELEASE_KEY_ALIAS` | key alias |
+| `RELEASE_KEY_PASSWORD` | key password |
+
 #### Run Unit Tests & Linting
 ```bash
 ./gradlew test ktlintCheck detekt
@@ -175,6 +189,20 @@ proxykillswitcher/
 ```bash
 ./gradlew assembleDebug
 ```
+
+#### Подпись
+
+Debug-сборки подписываются общим ключом из `config/signing/debug.keystore`, который лежит в репозитории. Поэтому Studio, CI и локальные агенты дают одинаковую подпись, и `adb install -r` обновляет приложение на месте, а не переустанавливает его. Debug-сборка получает суффикс `applicationId` `.debug` и может стоять рядом с релизной.
+
+Релизный ключ в репозиторий не попадает. Релизная сборка читает его из окружения и падает, если чего-то не хватает:
+
+| Переменная | Назначение |
+|---|---|
+| `RELEASE_KEYSTORE_PATH` | путь к `.jks` |
+| `RELEASE_KEYSTORE_BASE64` | `.jks` в base64, альтернатива пути |
+| `RELEASE_KEYSTORE_PASSWORD` | пароль хранилища |
+| `RELEASE_KEY_ALIAS` | alias ключа |
+| `RELEASE_KEY_PASSWORD` | пароль ключа |
 
 #### Запустить тесты и линтеры
 ```bash

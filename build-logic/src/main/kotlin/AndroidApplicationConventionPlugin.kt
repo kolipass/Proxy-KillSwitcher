@@ -17,6 +17,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
+                configureSigning(this)
                 defaultConfig.targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
             }
         }
