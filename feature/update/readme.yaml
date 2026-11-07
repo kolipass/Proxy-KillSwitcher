@@ -1,0 +1,77 @@
+pipeline: "Автообновление из GitHub Releases"
+# -------------------------------------------------------------------
+what_it_does:
+  - "При запуске приложения проверяет последний релиз репозитория kolipass/Proxy-KillSwitcher на GitHub."
+  - "Проверяет не чаще одного раза в шесть часов: время последней проверки живёт в SharedPreferences."
+  - "Если версия из тега новее установленной, скачивает APK в filesDir/updates и показывает прогресс на главном экране."
+  - "Сверяет package name, version code и подпись скачанного APK с установленным приложением и не даёт установить чужой файл."
+  - "Открывает системный установщик по нажатию «Install»; если «Установка неизвестных приложений» запрещена, отправляет в настройки."
+  - "Debug-сборка не может установить релизный APK поверх себя, поэтому предлагает открыть страницу релиза вместо установки."
+# -------------------------------------------------------------------
+components:
+  docker_services: []
+  host_tools:
+    - "GitHub Actions  # собирает и публикует подписанный APK по тегу"
+    - "GitHub CLI (gh)  # создаёт релиз на раннере"
+    - "Android SDK  # собирает приложение"
+# -------------------------------------------------------------------
+files:
+  module: "feature/update/build.gradle.kts"
+  manifest: "feature/update/src/main/AndroidManifest.xml"
+  data: "feature/update/src/main/java/mobi/tarantino/proxykillswitcher/feature/update/data"
+  domain: "feature/update/src/main/java/mobi/tarantino/proxykillswitcher/feature/update/domain"
+  screen: "feature/update/src/main/java/mobi/tarantino/proxykillswitcher/feature/update/presentation/ui/UpdateBlock.kt"
+  workflow: ".github/workflows/release.yaml"
+  provider_paths: "feature/update/src/main/res/xml/update_file_paths.xml"
+# -------------------------------------------------------------------
+setup:
+  once_per_repository:
+    command: "gh secret set RELEASE_KEYSTORE_BASE64 < release.jks.b64"
+    note: "Нужны также секреты RELEASE_KEYSTORE_PASSWORD, RELEASE_KEY_ALIAS и RELEASE_KEY_PASSWORD."
+  local_release_build:
+    command: "./gradlew assembleRelease -PappVersionName=1.2.3 -PappVersionCode=10203"
+    note: "Без релизного ключа в окружении сборка падает намеренно; debug-сборка для проверки обновления не подходит."
+# -------------------------------------------------------------------
+usage:
+  step_01: "Поставьте приложение из APK, опубликованного в GitHub Releases."
+  step_02: "Отпустите новый тег: git tag v1.2.3 && git push origin v1.2.3."
+  step_03: "Дождитесь workflow Release: он соберёт подписанный APK, посчитает version code и создаст релиз."
+  step_04: "Запустите приложение: блок сам проверит релиз, скачает APK и покажет кнопку «Install»."
+  step_05: "Нажмите «Install» и подтвердите установку в системном диалоге."
+  step_06: "Если системе запрещено ставить приложения из этого источника, разрешите установку и повторите шаг 05."
+# -------------------------------------------------------------------
+rejected_alternatives:
+  obtainium: "Сторонний клиент обновлений: ноль кода, но пользователю нужен ещё один APK."
+  fdroid: "Магазин берёт обновления на себя, но добавляет модерацию и требования к сборке."
+  release_page_only: "Просто открывать страницу релиза в браузере: без разрешений и установщика, но без автоматизации."
+  package_installer_session: "PackageInstaller.Session даёт колбэк установки, но требует receiver и запуска activity из фона; для одного тапа хватает ACTION_VIEW."
+# -------------------------------------------------------------------
+troubleshooting:
+  update_block_missing:
+    symptom: "Блок обновления не появляется на главном экране."
+    diagnose:
+      - "Проверьте, что установленная версия старее версии из последнего тега."
+      - "Проверьте, что прошло больше шести часов с последней проверки или нажмите Retry после ошибки."
+      - "Проверьте, что релиз опубликован и в нём есть APK-ассет."
+    fix:
+      - "Опубликуйте релиз с тегом vX.Y.Z и APK-ассетом."
+      - "Перезапустите приложение."
+  install_rejected:
+    symptom: "Системный установщик пишет «Приложение не установлено»."
+    diagnose:
+      - "Проверьте, что релизный и установленный APK подписаны одним ключом."
+      - "Проверьте, что version code релиза больше установленного."
+    fix:
+      - "Пересоберите релиз тем же ключом и с большим version code."
+  install_blocked_settings:
+    symptom: "По нажатию «Install» открывается экран разрешений вместо установщика."
+    diagnose:
+      - "Приложению запрещена установка неизвестных приложений."
+    fix:
+      - "Разрешите «Установка неизвестных приложений» для этого приложения и повторите установку."
+  debug_build:
+    symptom: "В debug-сборке вместо «Install» показывается «Open on GitHub»."
+    diagnose:
+      - "Debug-сборка имеет суффикс applicationId .debug и другой ключ, релизный APK поверх неё не встанет."
+    fix:
+      - "Проверяйте автообновление на релизной сборке, установленной из GitHub Releases."

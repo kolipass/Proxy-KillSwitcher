@@ -4,13 +4,16 @@ plugins {
     alias(libs.plugins.metro)
 }
 
+val appVersionCode = providers.gradleProperty("appVersionCode").orNull?.toIntOrNull() ?: 1
+val appVersionName = providers.gradleProperty("appVersionName").orNull?.takeIf(String::isNotBlank) ?: "1.0"
+
 android {
     namespace = "mobi.tarantino.proxykillswitcher"
 
     defaultConfig {
         applicationId = "mobi.tarantino.proxykillswitcher"
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
 }
 
@@ -23,6 +26,7 @@ dependencies {
     implementation(project(":core:preloading"))
     implementation(project(":core:tunnel"))
     implementation(project(":feature:killswitch"))
+    implementation(project(":feature:update"))
 
     implementation(libs.findLibrary("androidx-core-ktx").get())
     implementation(libs.findLibrary("androidx-activity-compose").get())

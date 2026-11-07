@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -44,6 +46,7 @@ import mobi.tarantino.proxykillswitcher.core.designsystem.theme.Hairline
 import mobi.tarantino.proxykillswitcher.core.designsystem.theme.OnPrimaryMuted
 import mobi.tarantino.proxykillswitcher.core.di.viewmodel.viewModel
 import mobi.tarantino.proxykillswitcher.feature.killswitch.vpn.ProxyVpnService
+import mobi.tarantino.proxykillswitcher.feature.update.presentation.ui.UpdateBlock
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -106,6 +109,7 @@ fun KillSwitchUiScreen(
     KillSwitchContent(
         uiState = viewModel.uiStateMapper.map(state),
         onIntent = viewModel::onIntent,
+        updateBlock = { UpdateBlock() },
     )
 }
 
@@ -113,11 +117,13 @@ fun KillSwitchUiScreen(
 private fun KillSwitchContent(
     uiState: KillSwitchUiState,
     onIntent: (KillSwitchIntent) -> Unit,
+    updateBlock: @Composable () -> Unit = {},
 ) {
     Column(
         modifier =
             Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = AppDimens.SpaceScreen, vertical = 32.dp),
         verticalArrangement = Arrangement.spacedBy(AppDimens.SpaceBlock),
     ) {
@@ -136,6 +142,7 @@ private fun KillSwitchContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        updateBlock()
     }
 }
 

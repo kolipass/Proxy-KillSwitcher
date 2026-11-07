@@ -122,6 +122,34 @@ The release keystore is never committed. Release builds read it from the environ
 | `RELEASE_KEY_ALIAS` | key alias |
 | `RELEASE_KEY_PASSWORD` | key password |
 
+#### Releases & Self-Update
+
+Releases are cut from tags and publish a signed APK to GitHub Releases:
+
+```bash
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+`.github/workflows/release.yaml` derives `versionName` from the tag and `versionCode` as
+`major * 10000 + minor * 100 + patch` (`v1.2.3` → `10203`), builds the APK with the release
+keystore and uploads `proxykillswitcher-1.2.3.apk` together with its `.sha256`.
+
+| Secret | Purpose |
+|---|---|
+| `RELEASE_KEYSTORE_BASE64` | base64-encoded release `.jks` |
+| `RELEASE_KEYSTORE_PASSWORD` | keystore password |
+| `RELEASE_KEY_ALIAS` | key alias |
+| `RELEASE_KEY_PASSWORD` | key password |
+
+The installed app checks the latest GitHub release on launch (at most once per six hours), downloads the APK, verifies its version code and signing certificate, and offers a one-tap install. The signing key must never change: a new key cannot update an already installed copy.
+
+Manual release build:
+
+```bash
+./gradlew assembleRelease -PappVersionName=1.2.3 -PappVersionCode=10203
+```
+
 #### Run Unit Tests & Linting
 ```bash
 ./gradlew test ktlintCheck detekt
@@ -203,6 +231,34 @@ Debug-сборки подписываются общим ключом из `conf
 | `RELEASE_KEYSTORE_PASSWORD` | пароль хранилища |
 | `RELEASE_KEY_ALIAS` | alias ключа |
 | `RELEASE_KEY_PASSWORD` | пароль ключа |
+
+#### Релизы и автообновление
+
+Релиз выпускается тегом и публикует подписанный APK в GitHub Releases:
+
+```bash
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+`.github/workflows/release.yaml` берёт `versionName` из тега, считает `versionCode` как
+`major * 10000 + minor * 100 + patch` (`v1.2.3` → `10203`), собирает APK релизным ключом и
+публикует `proxykillswitcher-1.2.3.apk` вместе с `.sha256`.
+
+| Секрет | Назначение |
+|---|---|
+| `RELEASE_KEYSTORE_BASE64` | релизный `.jks` в base64 |
+| `RELEASE_KEYSTORE_PASSWORD` | пароль хранилища |
+| `RELEASE_KEY_ALIAS` | alias ключа |
+| `RELEASE_KEY_PASSWORD` | пароль ключа |
+
+Установленное приложение при запуске проверяет последний релиз на GitHub (не чаще раза в шесть часов), скачивает APK, сверяет его version code и подпись с установленными и предлагает установку в одно нажатие. Ключ подписи менять нельзя: новой подписью нельзя обновить уже установленную копию.
+
+Ручная релизная сборка:
+
+```bash
+./gradlew assembleRelease -PappVersionName=1.2.3 -PappVersionCode=10203
+```
 
 #### Запустить тесты и линтеры
 ```bash

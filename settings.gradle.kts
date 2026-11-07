@@ -30,3 +30,4 @@ include(":core:preloading")
 include(":core:tunnel")
 
 include(":feature:killswitch")
+include(":feature:update")
