@@ -32,6 +32,16 @@ open class Preferences(
         )
     }
 
+    protected fun longProperty(
+        key: String,
+        defaultValue: Long = 0L,
+    ): ReadWriteProperty<Any?, Long> {
+        return preferenceProperty(
+            readValue = { sharedPreferences.getLong(key, defaultValue) },
+            writeValue = { updatedValue -> sharedPreferences.edit().putLong(key, updatedValue).apply() },
+        )
+    }
+
     protected fun booleanProperty(
         key: String,
         defaultValue: Boolean = false,
